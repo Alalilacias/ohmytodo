@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "users")
 @Schema(name = "User", description = "User entity with embedded address information")
+@Entity
 public class User {
 
     @Id

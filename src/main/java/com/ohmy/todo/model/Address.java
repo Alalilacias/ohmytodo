@@ -12,7 +12,7 @@ import lombok.*;
 @Schema(name = "Address", description = "Embedded address object containing user location details")
 public class Address {
 
-    @Schema(description = "Street address", example = "123 Main St")
+    @Schema(description = "Street address", example = "GV/Corts Catalanes 235")
     private String street;
 
     @Schema(description = "City name", example = "Barcelona")
