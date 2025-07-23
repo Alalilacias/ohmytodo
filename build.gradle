@@ -23,6 +23,7 @@ repositories {
 	mavenCentral()
 }
 
+// The empty spaces between different lifetimes of implementations are a preference of mine.
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -30,11 +31,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
+
 	compileOnly 'org.projectlombok:lombok'
+
 	runtimeOnly 'org.postgresql:postgresql'
+
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
