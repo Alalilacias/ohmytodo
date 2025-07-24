@@ -70,7 +70,7 @@ com.todoapp
 
 ---
 
-## 3. Endpoints
+## 4. Endpoints
 
 | Método | Endpoint           | Descripción                          | Seguridad |
 |--------|--------------------|--------------------------------------|-----------| 
@@ -79,7 +79,7 @@ com.todoapp
 | GET    | `/api/todos`       | Listar TODOs con filtros, orden, pag | No        |
 | GET    | `/api/todos/{id}`  | Obtener un TODO                      | No        |
 | POST   | `/api/todos`       | Crear TODO                           | No        |
-| PUT    | `/api/todos/{id}`  | Editar TODO                          | Sí        |
+| PATCH  | `/api/todos/{id}`  | Editar TODO                          | Sí        |
 | DELETE | `/api/todos/{id}`  | Eliminar TODO                        | Sí        |
 | POST   | `/api/auth/login`  | Autenticación                        | No        |
 | POST   | `/apo/auth/logout` | Desautenticación                     | Sí        |

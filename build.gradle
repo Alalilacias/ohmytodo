@@ -50,3 +50,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+tasks.named('bootRun') {
+	doFirst {
+		file('tmp/logs').mkdirs()
+	}
+}

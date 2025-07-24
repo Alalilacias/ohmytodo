@@ -13,8 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 class UserRepositoryTest {
 
+    final private UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserRepositoryTest(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
 
     @Test
     void shouldSaveAndFindUserWithEmbeddedAddress() {

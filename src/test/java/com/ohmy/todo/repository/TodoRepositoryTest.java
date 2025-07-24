@@ -8,13 +8,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class TodoRepositoryTest {
 
+    final private TodoRepository todoRepository;
+
     @Autowired
-    private TodoRepository todoRepository;
+    public TodoRepositoryTest(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     @Test
     void testSaveAndFindById() {
