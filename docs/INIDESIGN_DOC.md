@@ -18,11 +18,11 @@ La idea es simular el trabajo en la empresa y dentro de un sistema en el que se 
 ## 1. Tecnologías seleccionadas
 
 | Capa               | Tecnología                   |
-| ------------------ |------------------------------|
+|--------------------|------------------------------|
 | Backend            | Java 17, Spring Boot 3+      |
 | ORM & Persistencia | Spring Data JPA, JPA API     |
 | Base de datos      | PostgreSQL (o H2 para tests) |
-| Seguridad (Bonus)  | Spring Security              |
+| Seguridad          | Spring Security, Redis       |
 | Tests              | JUnit 5, Mockito             |
 | Frontend           | Thymeleaf                    |  
 

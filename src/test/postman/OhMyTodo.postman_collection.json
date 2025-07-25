@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "0894badc-7c76-4389-8c8e-827f7827f87a",
+		"name": "OhMyTodo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34173504",
+		"_collection_link": "https://fuck-this-feature.postman.co/workspace/OhMyTodo~b60e475d-82c9-44d1-adda-aafd3e2a722b/collection/34173504-0894badc-7c76-4389-8c8e-827f7827f87a?action=share&source=collection_link&creator=34173504"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "create_user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pablo\",\n    \"username\": \"pablito\",\n    \"password\": \"asdfasdf\",\n    \"address\": {\n        \"street\": \"GV/Corts Catalanes 235\",\n        \"city\": \"Barcelona\",\n        \"zipcode\": \"08001\",\n        \"country\": \"Spain\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local_url",
+			"value": "localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "base_endpoint",
+			"value": "/api",
+			"type": "string"
+		},
+		{
+			"key": "users_endpoint",
+			"value": "/users",
+			"type": "string"
+		}
+	]
+}

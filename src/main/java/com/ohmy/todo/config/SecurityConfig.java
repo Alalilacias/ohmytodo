@@ -1,6 +1,5 @@
 package com.ohmy.todo.config;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,12 +24,14 @@ public class SecurityConfig {
     };
 
     private static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/api/auth/register",
-            "/api/auth/login",
-            "/api/todos"
+            "/api/users",
+            "/api/todos",
+            "/login",
+            "/logout"
     };
 
     private static final String[] PUBLIC_RESOURCES = {
+            "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**"
     };
@@ -45,13 +46,18 @@ public class SecurityConfig {
         return http
 //                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(PUBLIC_RESOURCES).permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("SESSION")
+                )
                 .authenticationProvider(authenticationProvider)
                 .build();
     }

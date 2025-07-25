@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (doesUserExist(request.username())) {
             log.debug("User with username '{}' already exists", request.username());
-            throw new UserAlreadyExistsException("User " + request.username() + " already exists.");
+            throw new UserAlreadyExistsException(request.username());
         }
 
         User user = User.builder()
