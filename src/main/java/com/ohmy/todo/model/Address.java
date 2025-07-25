@@ -15,12 +15,12 @@ public class Address {
     @Schema(description = "Street address", example = "GV/Corts Catalanes 235")
     private String street;
 
-    @Schema(description = "City name", example = "Barcelona")
+    @Schema(description = "City username", example = "Barcelona")
     private String city;
 
     @Schema(description = "Postal code", example = "08001")
     private String zipcode;
 
-    @Schema(description = "Country name", example = "Spain")
+    @Schema(description = "Country username", example = "Spain")
     private String country;
 }

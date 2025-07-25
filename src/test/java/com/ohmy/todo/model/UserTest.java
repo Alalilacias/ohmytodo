@@ -2,6 +2,7 @@ package com.ohmy.todo.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.ohmy.todo.enums.Role;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
@@ -39,7 +40,7 @@ class UserTest {
     @Test
     void testAllArgsConstructor() {
         Address address = new Address("Traction Ave 837", "Los Angeles", "90013", "US");
-        User user = new User(1L, "Yolanda", "yolanda123", "secret", address);
+        User user = new User(1L, "Yolanda", "yolanda123", "secret", address, Role.USER);
 
         assertEquals("Yolanda", user.getName());
         assertEquals("yolanda123", user.getUsername());
@@ -48,5 +49,6 @@ class UserTest {
         assertEquals("Los Angeles", user.getAddress().getCity());
         assertEquals("90013", user.getAddress().getZipcode());
         assertEquals("US", user.getAddress().getCountry());
+        assertNotEquals(Role.ADMIN, user.getRole());
     }
 }

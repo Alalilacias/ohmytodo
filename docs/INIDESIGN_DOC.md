@@ -72,14 +72,13 @@ com.todoapp
 
 ## 4. Endpoints
 
-| Método | Endpoint           | Descripción                          | Seguridad |
-|--------|--------------------|--------------------------------------|-----------| 
-| GET    | `/api/users`       | Listar usuarios                      | No        |
-| POST   | `/api/users`       | Crear usuario                        | No        |
-| GET    | `/api/todos`       | Listar TODOs con filtros, orden, pag | No        |
-| GET    | `/api/todos/{id}`  | Obtener un TODO                      | No        |
-| POST   | `/api/todos`       | Crear TODO                           | No        |
-| PATCH  | `/api/todos/{id}`  | Editar TODO                          | Sí        |
-| DELETE | `/api/todos/{id}`  | Eliminar TODO                        | Sí        |
-| POST   | `/api/auth/login`  | Autenticación                        | No        |
-| POST   | `/apo/auth/logout` | Desautenticación                     | Sí        |
+| Método | Endpoint          | Descripción                          | Seguridad |
+|--------|-------------------|--------------------------------------|-----------|
+| POST   | `/api/users`      | Crear usuario                        | No        |
+| GET    | `/api/users`      | Listar usuarios                      | Sí        |
+| DELETE | `/api/users`      | Eliminar usuario                     | Sí        |
+| POST   | `/api/todos`      | Crear TODO                           | No(ish)   |
+| GET    | `/api/todos`      | Listar TODOs con filtros, orden, pag | No        |
+| GET    | `/api/todos/{id}` | Obtener un TODO                      | No        |
+| PATCH  | `/api/todos/{id}` | Editar TODO                          | Sí        |
+| DELETE | `/api/todos/{id}` | Eliminar TODO                        | Sí        |

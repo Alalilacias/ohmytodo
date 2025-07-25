@@ -1,5 +1,6 @@
 package com.ohmy.todo.repository;
 
+import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.model.User;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class UserRepositoryTest {
 
 
     @Test
-    void shouldSaveAndFindUserWithEmbeddedAddress() {
+    void testSaveAndFindUserWithEmbeddedAddress() {
         Address address = Address.builder()
                 .street("/Corts Catalanes 235")
                 .city("Barcelona")
@@ -34,6 +35,7 @@ class UserRepositoryTest {
                 .username("Captain Commodore Steele")
                 .password("hashed-password")
                 .address(address)
+                .role(Role.USER)
                 .build();
 
         User saved = userRepository.save(user);
