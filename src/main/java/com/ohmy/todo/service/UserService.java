@@ -9,6 +9,6 @@ import java.util.List;
 public interface UserService {
     public UserDto add(UserRegistrationRequest request);
     public User getById(long id);
-    public List<User> getAll();
+    public List<UserDto> getAll();
     public boolean delete(long id);
 }

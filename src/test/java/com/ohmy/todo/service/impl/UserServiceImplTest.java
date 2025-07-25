@@ -4,7 +4,7 @@ import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
-import com.ohmy.todo.exception.UserDoesNotExist;
+import com.ohmy.todo.exception.UserDoesNotExistException;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
@@ -87,14 +87,14 @@ class UserServiceImplTest {
     void testGetByIdWhenNotExists() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.getById(99L));
+        assertThrows(UserDoesNotExistException.class, () -> userService.getById(99L));
     }
 
     @Test
     void testGetAll() {
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = userService.getAll();
+        List<UserDto> result = userService.getAll();
         assertEquals(3, result.size());
     }
 
@@ -110,7 +110,7 @@ class UserServiceImplTest {
     void testDeleteWhenNotExists(){
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.delete(1L));
+        assertThrows(UserDoesNotExistException.class, () -> userService.delete(1L));
     }
 
     @Test
@@ -127,6 +127,6 @@ class UserServiceImplTest {
     void testLoadUserByUsernameWhenNotExists() {
         when(userRepository.findByUsername("NotMiranda")).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExist.class, () -> userService.loadUserByUsername("NotMiranda"));
+        assertThrows(UserDoesNotExistException.class, () -> userService.loadUserByUsername("NotMiranda"));
     }
 }
