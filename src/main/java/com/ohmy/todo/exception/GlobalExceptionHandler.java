@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -25,6 +26,15 @@ public class GlobalExceptionHandler {
         log.warn("Missing parameter at {}: {}", request.getRequestURI(), message);
         OhMyTodoError error = new OhMyTodoError(HttpStatus.BAD_REQUEST, message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<OhMyTodoError> handleNoResourceFoundException(NoResourceFoundException ex, HttpServletRequest request){
+        String message = String.format( "No resource found at endpoint: /%s. " +
+                "If this is a test, it was probably successful, as we don't have a ./ endpoint.", ex.getResourcePath());
+        log.warn(message);
+        OhMyTodoError error = new OhMyTodoError(HttpStatus.NOT_FOUND, message, request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(Exception.class)

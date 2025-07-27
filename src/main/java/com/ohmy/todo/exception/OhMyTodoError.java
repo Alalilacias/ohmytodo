@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 
 @Getter
-@Schema(description = "Structure for API error responses")
+@Schema(name = "OhMyTodoError", description = "Structure for API error responses")
 public class OhMyTodoError {
 
     @Schema(description = "Timestamp of the error", example = "2025-07-20T17:22:13.519")

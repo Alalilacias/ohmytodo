@@ -6,6 +6,7 @@ import com.ohmy.todo.exception.OhMyTodoError;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -71,12 +72,22 @@ public class UserController {
                 )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@RequestBody long id) {
+    public ResponseEntity<User> getUser(@PathVariable long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
     @Operation(summary = "Get a list of the DTOs of all users. This does not require authentication, as per the user story",
-            description = "Returns a list containing the username and ID of all users."
+            description = "Returns a list containing the username and ID of all users.",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "correctly returned",
+                        content = @Content(
+                                mediaType = "application/json",
+                                array = @ArraySchema(schema = @Schema(implementation = UserDto.class))
+                        )
+                )
+            }
     )
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsers(){
@@ -98,8 +109,8 @@ public class UserController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
                     )
     })
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteUser(@RequestBody long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable long id){
         return ResponseEntity.ok(userService.delete(id));
     }
 }

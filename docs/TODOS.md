@@ -8,7 +8,7 @@ Tareas pendientes, para organizar los futuros features y commits.
 
 ### Feature/toduserendpoints
 - [X] Implementar `GET /users` — Obtener todos los usuarios
-- [ ] Implementar `DELETE /users/{id}` — Eliminar un usuario por ID
+- [X] Implementar `DELETE /users/{id}` — Eliminar un usuario por ID
 
 ## TODOs - Inseguros
 
@@ -18,12 +18,12 @@ Tareas pendientes, para organizar los futuros features y commits.
 
 ### Feature/getodos
 - [ ] Implementar `GET /todos/{id}` — Obtener un TODO por ID
-- [ ] Implementar `GET /todos` — Obtener todos los TODOs (sin autenticación)
+- [ ] Implementar `GET /todos` — Obtener todo TODO (sin autenticación)
 - [ ] Añadir capacidad de filtrado en `GET /todos` (por categoría, prioridad, fecha, etc.)
 
 ---
 
-## TODOs - Seguro
+## TODO - Seguro
 
 ### Feature/updatodo
 - [ ] Implementar `PUT /secure/todos/{id}` — Actualizar un TODO (requiere autenticación)

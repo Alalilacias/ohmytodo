@@ -11,13 +11,190 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "create_user",
+					"name": "auth",
+					"item": [
+						{
+							"name": "create_user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let json = pm.response.json();",
+											"pm.collectionVariables.set(\"test_user_id\", json.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-XSRF-TOKEN",
+										"value": "{{csrfToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Pablo\",\n    \"username\": \"pablito\",\n    \"password\": \"asdfasdf\",\n    \"address\": {\n        \"street\": \"GV/Corts Catalanes 235\",\n        \"city\": \"Barcelona\",\n        \"zipcode\": \"08001\",\n        \"country\": \"Spain\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+									"host": [
+										"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "pablito",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asdfasdf",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{local_url}}/login",
+									"host": [
+										"{{local_url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{local_url}}/logout",
+									"host": [
+										"{{local_url}}"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "small_user_batch",
+					"item": [
+						{
+							"name": "create_user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Lucía\",\n    \"username\": \"lucia23\",\n    \"password\": \"contrasena1\",\n    \"address\": {\n      \"street\": \"Carrer de València 101\",\n      \"city\": \"Barcelona\",\n      \"zipcode\": \"08013\",\n      \"country\": \"España\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+									"host": [
+										"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_userI",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Jordi\",\n    \"username\": \"jordibcn\",\n    \"password\": \"12345678\",\n    \"address\": {\n      \"street\": \"Passeig de Sant Joan 45\",\n      \"city\": \"Barcelona\",\n      \"zipcode\": \"08009\",\n      \"country\": \"España\"\n    }\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+									"host": [
+										"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_userIII",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"María\",\n    \"username\": \"mariabcn\",\n    \"password\": \"clavefuerte\",\n    \"address\": {\n      \"street\": \"Carrer de Sants 234\",\n      \"city\": \"Barcelona\",\n      \"zipcode\": \"08028\",\n      \"country\": \"España\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+									"host": [
+										"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "get_user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Pablo\",\n    \"username\": \"pablito\",\n    \"password\": \"asdfasdf\",\n    \"address\": {\n        \"street\": \"GV/Corts Catalanes 235\",\n        \"city\": \"Barcelona\",\n        \"zipcode\": \"08001\",\n        \"country\": \"Spain\"\n    }\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,9 +202,72 @@
 							}
 						},
 						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}/{{test_user_id}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+							],
+							"path": [
+								"{{test_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pablo\",\n    \"username\": \"pablito\",\n    \"password\": \"asdfasdf\",\n    \"address\": {\n        \"street\": \"GV/Corts Catalanes 235\",\n        \"city\": \"Barcelona\",\n        \"zipcode\": \"08001\",\n        \"country\": \"Spain\"\n    }\n}"
+						},
+						"url": {
 							"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
 							"host": [
 								"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{csrfToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}/{{test_user_id}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+							],
+							"path": [
+								"{{test_user_id}}"
 							]
 						}
 					},
@@ -72,6 +312,16 @@
 		{
 			"key": "users_endpoint",
 			"value": "/users",
+			"type": "string"
+		},
+		{
+			"key": "test_user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "csrfToken",
+			"value": "",
 			"type": "string"
 		}
 	]
