@@ -24,11 +24,8 @@ public class Todo {
     private Long id;
 
     @Schema(description = "Title of the task", example = "Finish report")
+    @Column(length = 200)
     private String title;
-
-    @Schema(description = "Detailed description", example = "Finalize and send Q4 report to team")
-    @Column(length = 1000)
-    private String description;
 
     @Schema(description = "Whether the task is completed", example = "false")
     private boolean completed;
@@ -43,10 +40,14 @@ public class Todo {
     @Schema(description = "Time open in seconds", example = "86400")
     private Long timeOpen;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @Schema(description = "Owner of the task", implementation = User.class)
+    private User user;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.completed = false;
     }
 
     @PreUpdate

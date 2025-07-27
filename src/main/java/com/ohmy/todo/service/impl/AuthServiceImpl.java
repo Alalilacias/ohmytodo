@@ -70,11 +70,11 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.clearContext();
         log.debug("Security context cleared");
 
-        Cookie cookie = new Cookie("JSESSIONID", null);
+        Cookie cookie = new Cookie("SESSION", null);
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        log.debug("JSESSIONID cookie deleted");
+        log.debug("SESSION cookie deleted");
 
         return true;
     }

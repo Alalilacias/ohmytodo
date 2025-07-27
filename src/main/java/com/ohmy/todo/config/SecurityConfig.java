@@ -31,8 +31,8 @@ public class SecurityConfig {
     private static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/users",
             "/api/todos",
-            "/auth/login",
-            "/auth/logout"
+            "/api/auth/login",
+            "/api/auth/logout"
     };
 
     private static final String[] PUBLIC_RESOURCES = {

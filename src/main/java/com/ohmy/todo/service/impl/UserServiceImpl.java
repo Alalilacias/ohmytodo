@@ -10,7 +10,6 @@ import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
 import com.ohmy.todo.service.UserService;
 import com.ohmy.todo.utils.UserMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

@@ -1,13 +1,14 @@
 package com.ohmy.todo.service;
 
-import com.ohmy.todo.model.Todo;
+import com.ohmy.todo.dto.TodoDto;
+import com.ohmy.todo.dto.request.TodoRegistrationRequest;
 
 import java.util.List;
 
 public interface TodoService {
-    public Todo add();
-    public Todo get(long id);
-    public List<Todo> getAll();
+    public TodoDto add(TodoRegistrationRequest request);
+    public TodoDto get(long id);
+    public List<TodoDto> getAll();
     public boolean update();
     public boolean delete();
 }

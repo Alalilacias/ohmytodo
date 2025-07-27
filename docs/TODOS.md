@@ -13,8 +13,8 @@ Tareas pendientes, para organizar los futuros features y commits.
 ## TODOs - Inseguros
 
 ### Feature/creatodo
-- [ ] Implementar `POST /todos` — Crear un TODO (sin autenticación, entre comillas)
-- [ ] Validar la entrada de creación del TODO
+- [X] Implementar `POST /todos` — Crear un TODO (sin autenticación, entre comillas)
+- [X] Validar datos que se envía durante la creación del TODO
 
 ### Feature/getodos
 - [ ] Implementar `GET /todos/{id}` — Obtener un TODO por ID
@@ -38,9 +38,9 @@ Tareas pendientes, para organizar los futuros features y commits.
 ## Seguridad y Autenticación
 
 ### Feature/finalsecuritodo
-- [ ] Finalizar endpoints de login, registro y logout
-- [ ] Integrar login/logout con manejo de sesión mediante Redis
-- [ ] Asegurar la validación de sesión en middleware para endpoints protegidos
+- [X] Finalizar endpoints de login, registro y logout
+- [X] Integrar login/logout con manejo de sesión mediante Redis
+- [X] Asegurar la validación de sesión en middleware para endpoints protegidos
 
 ---
 
