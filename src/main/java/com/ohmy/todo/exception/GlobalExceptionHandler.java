@@ -4,10 +4,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.nio.file.AccessDeniedException;
 
 @Slf4j
 @RestControllerAdvice
@@ -35,6 +38,13 @@ public class GlobalExceptionHandler {
         log.warn(message);
         OhMyTodoError error = new OhMyTodoError(HttpStatus.NOT_FOUND, message, request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(HttpServletRequest request, AccessDeniedException ex) {
+        log.warn("Access denied at {} | Auth: {}", request.getRequestURI(),
+                SecurityContextHolder.getContext().getAuthentication());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
     }
 
     @ExceptionHandler(Exception.class)

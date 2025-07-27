@@ -1,7 +1,10 @@
 package com.ohmy.todo.service;
 
+import com.ohmy.todo.dto.request.LoginRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 public interface AuthService {
-    // Using boolean as a stand in, we'll have a different class for auth, but not yet.
-    public boolean login();
-    public boolean logout();
+    boolean login(LoginRequest loginRequest, HttpServletRequest request);
+    public boolean logout(HttpServletRequest request, HttpServletResponse response);
 }

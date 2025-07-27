@@ -5,6 +5,7 @@ import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
 import com.ohmy.todo.exception.UserDoesNotExistException;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
@@ -16,6 +17,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,8 +29,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -40,6 +44,7 @@ class UserServiceImplTest {
     private UserRegistrationRequest request;
     private User user;
     private List<User> users;
+    private SecurityContext securityContext;
 
     @BeforeEach
     void setup() {
@@ -54,6 +59,17 @@ class UserServiceImplTest {
                 .role(Role.USER)
                 .build();
         users = List.of(user, user, user);
+        securityContext = mock(SecurityContext.class);
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles(user.getRole().name())
+                .build();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
@@ -76,18 +92,18 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetByIdWhenExists(){
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    void testGetUserBySecurityContextHolderWhenAuthenticated(){
+        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
 
-        User result = userService.getById(1L);
+        User result = userService.getUserBySecurityContextHolder();
         assertEquals("Miranda", result.getUsername());
     }
 
     @Test
-    void testGetByIdWhenNotExists() {
-        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+    void testGetUserBySecurityContextHolderWhenNotAuthenticated() {
+        SecurityContextHolder.clearContext();
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.getById(99L));
+        assertThrows(UserNotAuthorizedException.class, () -> userService.getUserBySecurityContextHolder());
     }
 
     @Test
@@ -99,18 +115,26 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testDeleteWhenExists(){
-        when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
+    void testDeleteBySecurityContextHolderWhenExists(){
+        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
+        when(userRepository.deleteByUsername("Miranda")).thenReturn(true);
 
-        boolean result = userService.delete(1L);
+        boolean result = userService.deleteBySecurityContextHolder();
+
         assertTrue(result);
-        verify(userRepository).deleteById(1L);
+        verify(userRepository).deleteByUsername("Miranda");
     }
     @Test
-    void testDeleteWhenNotExists(){
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+    void testDeleteBySecurityContextHolderWhenNotExists(){
+        when(userRepository.findByUsername("Ghost")).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.delete(1L));
+        assertThrows(UserDoesNotExistException.class, () -> userService.deleteBySecurityContextHolder());
+    }
+    @Test
+    void testDeleteBySecurityContextHolderWhenUnauthenticated() {
+        SecurityContextHolder.clearContext();
+
+        assertThrows(UserNotAuthorizedException.class, () -> userService.deleteBySecurityContextHolder());
     }
 
     @Test

@@ -5,12 +5,16 @@ import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
 import com.ohmy.todo.exception.UserDoesNotExistException;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
 import com.ohmy.todo.service.UserService;
 import com.ohmy.todo.utils.UserMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,13 +54,40 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getById(long id) {
-        log.debug("Fetching user by ID: {}", id);
+    public User getUserBySecurityContextHolder() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("SecurityContext authentication: {}", auth);
 
-        return userRepository.findById(id)
+        if (auth == null || !auth.isAuthenticated()) {
+            log.warn("No authenticated user in SecurityContext");
+            throw new UserNotAuthorizedException();
+        }
+
+        Object principal = auth.getPrincipal();
+        log.debug("Authentication principal: {}", principal);
+
+        if (principal instanceof UserDetails userDetails) {
+            String username = userDetails.getUsername();
+            log.debug("Extracted username from principal: {}", username);
+
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> {
+                        log.warn("User '{}' not found in database", username);
+                        return new UsernameNotFoundException("User not found");
+                    });
+        }
+
+        log.warn("Authentication principal is not of type UserDetails: {}", principal.getClass());
+        throw new UserNotAuthorizedException();
+    }
+
+    private User getByUsername(String username) {
+        log.debug("Fetching user by username: {}", username);
+
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.debug("User with ID {} not found", id);
-                    return new UserDoesNotExistException(id);
+                    log.debug("User with usernam {} not found", username);
+                    return new UserDoesNotExistException(username);
                 });
     }
 
@@ -70,18 +101,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean delete(long id) {
-        log.debug("Attempting to delete user with ID: {}", id);
-
-        if (!doesUserExist(id)) {
-            log.debug("User with ID {} does not exist", id);
-            throw new UserDoesNotExistException(id);
+    public boolean deleteBySecurityContextHolder() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new UserNotAuthorizedException();
         }
 
-        userRepository.deleteById(id);
-        log.debug("User with ID {} deleted successfully", id);
+        String username = ((UserDetails) auth.getPrincipal()).getUsername();
+        User user = getByUsername(username);
+        log.debug("Attempting to delete user: {}", username);
 
-        return true;
+        try {
+            userRepository.delete(user);
+            log.debug("User {} deleted successfully", username);
+            return true;
+        } catch (Exception e) {
+            log.warn("Unable to delete user {}", username);
+            return false;
+        }
     }
 
     @Override
@@ -105,8 +142,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private boolean doesUserExist(String username){
         return userRepository.findByUsername(username).isPresent();
-    }
-    private boolean doesUserExist(long id){
-        return userRepository.findById(id).isPresent();
     }
 }
