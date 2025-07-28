@@ -26,8 +26,8 @@ Tareas pendientes, para organizar los futuros features y commits.
 ## TODO - Seguro
 
 ### Feature/updatodo
-- [ ] Implementar `Patch /api/todos/{id}` — Actualizar un TODO (requiere autenticación)
-- [ ] Autorizar acceso a la actualización según propiedad del usuario
+- [X] Implementar `Patch /api/todos/{id}` — Actualizar un TODO (requiere autenticación)
+- [X] Autorizar acceso a la actualización según propiedad del usuario
 
 ### Feature/eliminatodo
 - [ ] Implementar `DELETE /api/todos/{id}` — Eliminar un TODO (requiere autenticación)

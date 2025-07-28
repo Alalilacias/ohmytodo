@@ -1,6 +1,9 @@
 package com.ohmy.todo.service.impl;
 
 import com.ohmy.todo.dto.request.LoginRequest;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
+import com.ohmy.todo.model.User;
+import com.ohmy.todo.repository.UserRepository;
 import com.ohmy.todo.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     @Override
     public boolean login(LoginRequest loginRequest, HttpServletRequest request) {
@@ -77,5 +83,38 @@ public class AuthServiceImpl implements AuthService {
         log.debug("SESSION cookie deleted");
 
         return true;
+    }
+
+    @Override
+    public User getUserBySecurityContextHolder() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("SecurityContext authentication: {}", auth.getName());
+
+        if (auth == null || !auth.isAuthenticated()) {
+            log.warn("No authenticated user in SecurityContext");
+            throw new UserNotAuthorizedException();
+        }
+
+        Object principal = auth.getPrincipal();
+        log.debug("Authentication principal: {}", principal);
+
+        if (principal instanceof UserDetails userDetails) {
+            String username = userDetails.getUsername();
+            log.debug("Extracted username from principal: {}", username);
+
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> {
+                        log.warn("User '{}' not found in database", username);
+                        return new UsernameNotFoundException("User not found");
+                    });
+        }
+
+        log.warn("Authentication principal is not of type UserDetails: {}", principal.getClass());
+        throw new UserNotAuthorizedException();
+    }
+
+    @Override
+    public long getUserIdBySecurityContextHolder() {
+        return getUserBySecurityContextHolder().getId();
     }
 }

@@ -111,4 +111,5 @@ public class TodoController {
     public ResponseEntity<TodoDto> updateTodo(@RequestBody TodoUpdateRequest request){
         return ResponseEntity.ok(todoService.update(request));
     }
+
 }

@@ -5,16 +5,17 @@ import com.ohmy.todo.dto.request.TodoRegistrationRequest;
 import com.ohmy.todo.dto.request.TodoUpdateRequest;
 import com.ohmy.todo.dto.response.CompleteTodoResponse;
 import com.ohmy.todo.exception.TodoNotFoundException;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.model.Todo;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.TodoRepository;
 import com.ohmy.todo.repository.UserRepository;
+import com.ohmy.todo.service.AuthService;
 import com.ohmy.todo.service.TodoService;
 import com.ohmy.todo.utils.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @Override
     public TodoDto add(TodoRegistrationRequest request) {
@@ -60,15 +62,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private Todo get(long id) {
-        Todo todo = todoRepository.findById(id)
+        return todoRepository.findById(id)
                 .orElseThrow(() -> new TodoNotFoundException(id));
-
-        // Soy consciente de que el ejercicio pide priorizar evitar anotaciones de Hibernate, pero para mantener la
-        // anotación de ManyToOne y su uso más eficiente para el programa y permitir que se devuelva el usuario completo
-        // esta es la mejor opción.
-//        Hibernate.initialize(todo.getUser());
-
-        return todo;
     }
 
     @Transactional
@@ -96,11 +91,8 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoDto update(TodoUpdateRequest request) {
         Todo todo = get(request.todoId());
-        userRepository.findById(request.userId())
-                .orElseThrow(() -> {
-                    log.warn("User with ID: {} does not exist.", request.userId());
-                    return new UserNotFoundException(request.userId());
-                });
+
+        ensureOwnership(todo);
 
         todo.setTitle(request.title());
         todo.setCompleted(request.completed());
@@ -111,5 +103,13 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public boolean delete() {
         return false;
+    }
+
+    private void ensureOwnership(Todo todo) {
+        User user = authService.getUserBySecurityContextHolder();
+        if (!todo.getUser().getId().equals(user.getId())) {
+            log.warn("User ID {} is not authorized to access Todo ID {}", user.getId(), todo.getId());
+            throw new UserNotAuthorizedException();
+        }
     }
 }

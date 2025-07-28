@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface UserService {
     public UserDto add(UserRegistrationRequest request);
-    User getUserBySecurityContextHolder();
     public List<UserDto> getAll();
     boolean deleteBySecurityContextHolder();
 }

@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,7 +63,7 @@ public class UserController {
     )
     @GetMapping
     public ResponseEntity<User> getUser() {
-        return ResponseEntity.ok(userService.getUserBySecurityContextHolder());
+        return ResponseEntity.ok(authService.getUserBySecurityContextHolder());
     }
 
     @Operation(summary = "Get a list of the DTOs of all users. This does not require authentication, as per the user story",

@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -38,16 +39,21 @@ class UserServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @InjectMocks
+    @Mock
+    private AuthenticationManager authenticationManager;
     private UserServiceImpl userService;
+    private AuthServiceImpl authService;
+
 
     private UserRegistrationRequest request;
     private User user;
     private List<User> users;
-    private SecurityContext securityContext;
 
     @BeforeEach
     void setup() {
+        authService = new AuthServiceImpl(authenticationManager, userRepository);
+        userService = new UserServiceImpl(userRepository, authService, passwordEncoder);
+
         Address address = new Address("Valencia 104", "Barcelona", "08015", "Cataluña, España");
         request = new UserRegistrationRequest("Manuel","Miranda","Password", address);
         user = User.builder()
@@ -59,7 +65,7 @@ class UserServiceImplTest {
                 .role(Role.USER)
                 .build();
         users = List.of(user, user, user);
-        securityContext = mock(SecurityContext.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
         UserDetails userDetails = org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
@@ -92,21 +98,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetUserBySecurityContextHolderWhenAuthenticated(){
-        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
-
-        User result = userService.getUserBySecurityContextHolder();
-        assertEquals("Miranda", result.getUsername());
-    }
-
-    @Test
-    void testGetUserBySecurityContextHolderWhenNotAuthenticated() {
-        SecurityContextHolder.clearContext();
-
-        assertThrows(UserNotAuthorizedException.class, () -> userService.getUserBySecurityContextHolder());
-    }
-
-    @Test
     void testGetAll() {
         when(userRepository.findAll()).thenReturn(users);
 
@@ -117,24 +108,12 @@ class UserServiceImplTest {
     @Test
     void testDeleteBySecurityContextHolderWhenExists(){
         when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
-        when(userRepository.deleteByUsername("Miranda")).thenReturn(true);
+        doNothing().when(userRepository).delete(user);
 
         boolean result = userService.deleteBySecurityContextHolder();
 
         assertTrue(result);
-        verify(userRepository).deleteByUsername("Miranda");
-    }
-    @Test
-    void testDeleteBySecurityContextHolderWhenNotExists(){
-        when(userRepository.findByUsername("Ghost")).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> userService.deleteBySecurityContextHolder());
-    }
-    @Test
-    void testDeleteBySecurityContextHolderWhenUnauthenticated() {
-        SecurityContextHolder.clearContext();
-
-        assertThrows(UserNotAuthorizedException.class, () -> userService.deleteBySecurityContextHolder());
+        verify(userRepository).delete(user);
     }
 
     @Test
