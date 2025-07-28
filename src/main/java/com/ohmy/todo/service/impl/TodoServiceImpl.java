@@ -100,9 +100,14 @@ public class TodoServiceImpl implements TodoService {
         return TodoMapper.toDto(todoRepository.save(todo));
     }
 
+    @Transactional
     @Override
-    public boolean delete() {
-        return false;
+    public void delete(long id) {
+        Todo todo = get(id);
+
+        ensureOwnership(todo);
+
+        todoRepository.delete(todo);
     }
 
     private void ensureOwnership(Todo todo) {

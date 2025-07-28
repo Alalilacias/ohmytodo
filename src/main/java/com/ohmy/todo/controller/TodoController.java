@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -79,8 +80,7 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getAllFiltered(text, username));
     }
 
-    @Operation(
-            summary = "Update an existing Todo.",
+    @Operation(summary = "Update an existing Todo.",
             description = "Compares the given TODOs information and modifies the modifiable parts." +
                     "Only allows modifying title and completed at the moment.",
             security = @SecurityRequirement(name = "cookieAuth"),
@@ -112,4 +112,35 @@ public class TodoController {
         return ResponseEntity.ok(todoService.update(request));
     }
 
+    @Operation(summary = "Delete an existing Todo.",
+            description = "Deletes referenced ID, if the authenticated user is the owner of it.",
+            security = @SecurityRequirement(name = "cookieAuth"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Correctly Deleted.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = TodoDto.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized — authentication is required",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User does not exist",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Todo does not exist",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
+                    )
+            }
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTodo(@PathVariable long id){
+        todoService.delete(id);
+        return ResponseEntity.ok("Todo correctly deleted");
+    }
 }

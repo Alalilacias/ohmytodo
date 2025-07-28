@@ -14,5 +14,5 @@ public interface TodoService {
     List<TodoDto> getAll();
     List<TodoDto> getAllFiltered(String username, String text);
     TodoDto update(TodoUpdateRequest request);
-    public boolean delete();
+    void delete(long id);
 }
