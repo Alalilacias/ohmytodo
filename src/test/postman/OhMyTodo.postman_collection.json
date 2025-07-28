@@ -4,7 +4,7 @@
 		"name": "OhMyTodo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "34173504",
-		"_collection_link": "https://fuck-this-feature.postman.co/workspace/OhMyTodo~b60e475d-82c9-44d1-adda-aafd3e2a722b/collection/34173504-0894badc-7c76-4389-8c8e-827f7827f87a?action=share&source=collection_link&creator=34173504"
+		"_collection_link": "https://fuck-this-feature.postman.co/workspace/b60e475d-82c9-44d1-adda-aafd3e2a722b/collection/34173504-0894badc-7c76-4389-8c8e-827f7827f87a?action=share&source=collection_link&creator=34173504"
 	},
 	"item": [
 		{
@@ -17,7 +17,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"user_id\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -249,7 +250,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"title\": \"a\",\n  \"completed\": false\n}",
+							"raw": "{\n  \"userId\": {{user_id}},\n  \"title\": \"a\",\n  \"completed\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -347,6 +348,20 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "delete_todo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id_path}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id_path}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -423,6 +438,11 @@
 		},
 		{
 			"key": "todo_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
 			"value": "",
 			"type": "string"
 		}
