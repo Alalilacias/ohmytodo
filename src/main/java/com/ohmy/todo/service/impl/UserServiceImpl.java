@@ -4,17 +4,18 @@ import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
-import com.ohmy.todo.service.AuthService;
 import com.ohmy.todo.service.UserService;
 import com.ohmy.todo.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean deleteBySecurityContextHolder() {
-        User user = authService.getUserBySecurityContextHolder();
+        User user = getUserBySecurityContextHolder();
         log.debug("Attempting to delete user: {}", user.getUsername());
 
         try {
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         log.debug("Loading user by username: {}", username);
 
         User user = userRepository.findByUsername(username)
@@ -92,6 +92,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().name())
                 .build();
+    }
+
+    @Override
+    public User getUserBySecurityContextHolder() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("SecurityContext authentication: {}", auth.getName());
+
+        if (!auth.isAuthenticated()) {
+            log.warn("No authenticated user in SecurityContext");
+            throw new UserNotAuthorizedException();
+        }
+
+        Object principal = auth.getPrincipal();
+        log.debug("Authentication principal: {}", principal);
+
+        if (principal instanceof UserDetails userDetails) {
+            String username = userDetails.getUsername();
+            log.debug("Extracted username from principal: {}", username);
+
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> {
+                        log.warn("User '{}' not found in database", username);
+                        return new UserNotFoundException("User not found");
+                    });
+        }
+
+        log.warn("Authentication principal is not of type UserDetails: {}", principal.getClass());
+        throw new UserNotAuthorizedException();
     }
 
     private boolean doesUserExist(String username){

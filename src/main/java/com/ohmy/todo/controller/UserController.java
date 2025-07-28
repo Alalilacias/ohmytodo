@@ -63,7 +63,7 @@ public class UserController {
     )
     @GetMapping
     public ResponseEntity<User> getUser() {
-        return ResponseEntity.ok(authService.getUserBySecurityContextHolder());
+        return ResponseEntity.ok(userService.getUserBySecurityContextHolder());
     }
 
     @Operation(summary = "Get a list of the DTOs of all users. This does not require authentication, as per the user story",

@@ -5,7 +5,6 @@ import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
 import com.ohmy.todo.exception.UserNotFoundException;
-import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
@@ -17,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -39,10 +37,8 @@ class UserServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @Mock
-    private AuthenticationManager authenticationManager;
+    @InjectMocks
     private UserServiceImpl userService;
-    private AuthServiceImpl authService;
 
 
     private UserRegistrationRequest request;
@@ -51,8 +47,6 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setup() {
-        authService = new AuthServiceImpl(authenticationManager, userRepository);
-        userService = new UserServiceImpl(userRepository, authService, passwordEncoder);
 
         Address address = new Address("Valencia 104", "Barcelona", "08015", "Cataluña, España");
         request = new UserRegistrationRequest("Manuel","Miranda","Password", address);
@@ -106,7 +100,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testDeleteBySecurityContextHolderWhenExists(){
+    void testDeleteBySecurityContextHolderWhenExists() {
         when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
         doNothing().when(userRepository).delete(user);
 
@@ -114,6 +108,13 @@ class UserServiceImplTest {
 
         assertTrue(result);
         verify(userRepository).delete(user);
+    }
+
+    @Test
+    void testDeleteBySecurityContextHolderWhenNotExists() {
+        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.deleteBySecurityContextHolder());
     }
 
     @Test
@@ -131,5 +132,22 @@ class UserServiceImplTest {
         when(userRepository.findByUsername("NotMiranda")).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.loadUserByUsername("NotMiranda"));
+    }
+
+    @Test
+    void testGetUserBySecurityContextHolderWhenExists() {
+        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.of(user));
+
+        User result = userService.getUserBySecurityContextHolder();
+
+        assertEquals("Miranda", result.getUsername());
+        verify(userRepository).findByUsername("Miranda");
+    }
+
+    @Test
+    void testGetUserBySecurityContextHolderWhenNotExists() {
+        when(userRepository.findByUsername("Miranda")).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getUserBySecurityContextHolder());
     }
 }

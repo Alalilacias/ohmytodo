@@ -10,4 +10,5 @@ public interface UserService {
     public UserDto add(UserRegistrationRequest request);
     public List<UserDto> getAll();
     boolean deleteBySecurityContextHolder();
+    User getUserBySecurityContextHolder();
 }

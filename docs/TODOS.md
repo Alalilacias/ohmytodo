@@ -30,8 +30,8 @@ Tareas pendientes, para organizar los futuros features y commits.
 - [X] Autorizar acceso a la actualización según propiedad del usuario
 
 ### Feature/eliminatodo
-- [ ] Implementar `DELETE /api/todos/{id}` — Eliminar un TODO (requiere autenticación)
-- [ ] Autorizar acceso a la eliminación según propiedad del usuario
+- [X] Implementar `DELETE /api/todos/{id}` — Eliminar un TODO (requiere autenticación)
+- [X] Autorizar acceso a la eliminación según propiedad del usuario
 
 ---
 
