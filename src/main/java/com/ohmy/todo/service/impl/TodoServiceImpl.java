@@ -2,6 +2,8 @@ package com.ohmy.todo.service.impl;
 
 import com.ohmy.todo.dto.TodoDto;
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
+import com.ohmy.todo.dto.request.TodoUpdateRequest;
+import com.ohmy.todo.dto.response.CompleteTodoResponse;
 import com.ohmy.todo.exception.TodoNotFoundException;
 import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.model.Todo;
@@ -12,7 +14,9 @@ import com.ohmy.todo.service.TodoService;
 import com.ohmy.todo.utils.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,39 +53,59 @@ public class TodoServiceImpl implements TodoService {
 
     // En este caso devolvemos la entidad entera para que pueda ser accedida y revisada desde Postman por quien revise
     // este repositorio. En un entorno de producción, se devolvería un DTO.
+    @Transactional
     @Override
-    public Todo get(long id) {
-        return todoRepository.customFindById(id)
-                .orElseThrow(() -> {
-                        log.debug("Todo with ID {} not found.", id);
-                        return new TodoNotFoundException(id);
-                });
+    public CompleteTodoResponse getCompleteResponse(long id){
+        return TodoMapper.toCompleteResponse(get(id));
     }
 
+    private Todo get(long id) {
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new TodoNotFoundException(id));
+
+        // Soy consciente de que el ejercicio pide priorizar evitar anotaciones de Hibernate, pero para mantener la
+        // anotación de ManyToOne y su uso más eficiente para el programa y permitir que se devuelva el usuario completo
+        // esta es la mejor opción.
+//        Hibernate.initialize(todo.getUser());
+
+        return todo;
+    }
+
+    @Transactional
     @Override
     public List<TodoDto> getAll() {
         log.info("Fetching all todos");
-        return todoRepository.customFindAll()
+        return todoRepository.findAll()
                 .stream()
                 .map(TodoMapper::toDto)
                 .toList();
     }
 
+    @Transactional
     @Override
     public List<TodoDto> getAllFiltered(String text, String username) {
         log.info("Fetching all todos where text: {}, and username: {}", text, username);
         if (text == null && username == null) {return getAll();}
-//        if (username == null) { username = "";}
-//        if (text == null) { text = "";}
 
         List<Todo> todos = todoRepository.findAllFiltered(text, username);
 
         return todos.stream().map(TodoMapper::toDto).toList();
     }
 
+    @Transactional
     @Override
-    public boolean update() {
-        return false;
+    public TodoDto update(TodoUpdateRequest request) {
+        Todo todo = get(request.todoId());
+        userRepository.findById(request.userId())
+                .orElseThrow(() -> {
+                    log.warn("User with ID: {} does not exist.", request.userId());
+                    return new UserNotFoundException(request.userId());
+                });
+
+        todo.setTitle(request.title());
+        todo.setCompleted(request.completed());
+
+        return TodoMapper.toDto(todoRepository.save(todo));
     }
 
     @Override

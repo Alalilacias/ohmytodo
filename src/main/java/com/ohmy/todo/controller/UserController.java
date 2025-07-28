@@ -104,11 +104,6 @@ public class UserController {
                             description = "User does not exist",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
                     ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Unexpected server error",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
-                    )
             }
     )
     @DeleteMapping

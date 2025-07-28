@@ -236,7 +236,8 @@
 							"script": {
 								"exec": [
 									"const response = pm.response.json();",
-									"pm.collectionVariables.set(\"todo_id\", \"/\" + response.id);"
+									"pm.collectionVariables.set(\"todo_id_path\", \"/\" + response.id);",
+									"pm.collectionVariables.set(\"todo_id\", response.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -265,13 +266,13 @@
 					"response": []
 				},
 				{
-					"name": "create_todo_incorrect",
+					"name": "update_todo",
 					"request": {
-						"method": "POST",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": -3,\n  \"title\": \"\",\n  \"completed\": false\n}",
+							"raw": "{\n  \"userId\": 4,\n  \"todoId\": \"{{todo_id}}\",\n  \"title\": \"New title\",\n  \"completed\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,9 +294,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id}}",
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id_path}}",
 							"host": [
-								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id}}"
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id_path}}"
 							]
 						}
 					},
@@ -417,8 +418,13 @@
 			"type": "string"
 		},
 		{
-			"key": "todo_id",
+			"key": "todo_id_path",
 			"value": ""
+		},
+		{
+			"key": "todo_id",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

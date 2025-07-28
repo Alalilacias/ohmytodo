@@ -17,7 +17,6 @@ class TodoTest {
         Todo todo = Todo.builder()
                 .id(42L)
                 .title("Finish report")
-                .description("Finalize and send Q4 report to team")
                 .completed(true)
                 .createdAt(now)
                 .completedAt(done)
@@ -26,7 +25,6 @@ class TodoTest {
 
         assertEquals(42L, todo.getId());
         assertEquals("Finish report", todo.getTitle());
-        assertEquals("Finalize and send Q4 report to team", todo.getDescription());
         assertTrue(todo.isCompleted());
         assertEquals(now, todo.getCreatedAt());
         assertEquals(done, todo.getCompletedAt());
@@ -38,12 +36,10 @@ class TodoTest {
         Todo todo = new Todo();
         todo.setId(1L);
         todo.setTitle("Write tests");
-        todo.setDescription("Write unit tests for the Todo class");
         todo.setCompleted(false);
 
         assertEquals(1L, todo.getId());
         assertEquals("Write tests", todo.getTitle());
-        assertEquals("Write unit tests for the Todo class", todo.getDescription());
         assertFalse(todo.isCompleted());
     }
 
@@ -61,7 +57,6 @@ class TodoTest {
         Todo todo = new Todo();
         todo.onCreate();
 
-        LocalDateTime createdAt = todo.getCreatedAt();
         todo.setCompleted(true);
 
         todo.onUpdate();

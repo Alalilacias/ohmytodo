@@ -69,11 +69,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String username = userDetails.getUsername();
             log.debug("Extracted username from principal: {}", username);
 
-            return userRepository.findByUsername(username)
-                    .orElseThrow(() -> {
-                        log.warn("User '{}' not found in database", username);
-                        return new UsernameNotFoundException("User not found");
-                    });
+                return userRepository.findByUsername(username)
+                        .orElseThrow(() -> {
+                            log.warn("User '{}' not found in database", username);
+                            return new UsernameNotFoundException("User not found");
+                        });
         }
 
         log.warn("Authentication principal is not of type UserDetails: {}", principal.getClass());

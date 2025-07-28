@@ -26,7 +26,7 @@ Tareas pendientes, para organizar los futuros features y commits.
 ## TODO - Seguro
 
 ### Feature/updatodo
-- [ ] Implementar `PUT /api/todos/{id}` — Actualizar un TODO (requiere autenticación)
+- [ ] Implementar `Patch /api/todos/{id}` — Actualizar un TODO (requiere autenticación)
 - [ ] Autorizar acceso a la actualización según propiedad del usuario
 
 ### Feature/eliminatodo
