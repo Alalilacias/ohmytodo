@@ -4,7 +4,7 @@ import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
-import com.ohmy.todo.exception.UserDoesNotExistException;
+import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.UserRepository;
@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.debug("User with usernam {} not found", username);
-                    return new UserDoesNotExistException(username);
+                    log.debug("User with username {} not found", username);
+                    return new UserNotFoundException(username);
                 });
     }
 
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
                     log.debug("User with username '{}' not found", username);
-                    return new UserDoesNotExistException(username);
+                    return new UserNotFoundException(username);
                 });
 
         log.debug("User '{}' found. Returning UserDetails", username);

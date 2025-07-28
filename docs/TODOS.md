@@ -17,20 +17,20 @@ Tareas pendientes, para organizar los futuros features y commits.
 - [X] Validar datos que se envía durante la creación del TODO
 
 ### Feature/getodos
-- [ ] Implementar `GET /todos/{id}` — Obtener un TODO por ID
-- [ ] Implementar `GET /todos` — Obtener todo TODO (sin autenticación)
-- [ ] Añadir capacidad de filtrado en `GET /todos` (por categoría, prioridad, fecha, etc.)
+- [X] Implementar `GET /todos/{id}` — Obtener un TODO por ID
+- [X] Implementar `GET /todos` — Obtener todo TODO (sin autenticación)
+- [X] Añadir capacidad de filtrado en `GET /todos` (por usuario exacto o texto que encaje parcialmente)
 
 ---
 
 ## TODO - Seguro
 
 ### Feature/updatodo
-- [ ] Implementar `PUT /secure/todos/{id}` — Actualizar un TODO (requiere autenticación)
+- [ ] Implementar `PUT /api/todos/{id}` — Actualizar un TODO (requiere autenticación)
 - [ ] Autorizar acceso a la actualización según propiedad del usuario
 
 ### Feature/eliminatodo
-- [ ] Implementar `DELETE /secure/todos/{id}` — Eliminar un TODO (requiere autenticación)
+- [ ] Implementar `DELETE /api/todos/{id}` — Eliminar un TODO (requiere autenticación)
 - [ ] Autorizar acceso a la eliminación según propiedad del usuario
 
 ---

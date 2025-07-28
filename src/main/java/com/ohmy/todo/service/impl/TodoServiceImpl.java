@@ -2,7 +2,8 @@ package com.ohmy.todo.service.impl;
 
 import com.ohmy.todo.dto.TodoDto;
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
-import com.ohmy.todo.exception.UserDoesNotExistException;
+import com.ohmy.todo.exception.TodoNotFoundException;
+import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.model.Todo;
 import com.ohmy.todo.model.User;
 import com.ohmy.todo.repository.TodoRepository;
@@ -30,7 +31,7 @@ public class TodoServiceImpl implements TodoService {
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> {
                     log.warn("User not found with ID: {}", request.userId());
-                    return new UserDoesNotExistException(request.userId());
+                    return new UserNotFoundException(request.userId());
                 });
 
         Todo todo = Todo.builder()
@@ -46,9 +47,15 @@ public class TodoServiceImpl implements TodoService {
         return todoDto;
     }
 
+    // En este caso devolvemos la entidad entera para que pueda ser accedida y revisada desde Postman por quien revise
+    // este repositorio. En un entorno de producción, se devolvería un DTO.
     @Override
-    public TodoDto get(long id) {
-        return null;
+    public Todo get(long id) {
+        return todoRepository.customFindById(id)
+                .orElseThrow(() -> {
+                        log.debug("Todo with ID {} not found.", id);
+                        return new TodoNotFoundException(id);
+                });
     }
 
     @Override
@@ -58,6 +65,18 @@ public class TodoServiceImpl implements TodoService {
                 .stream()
                 .map(TodoMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public List<TodoDto> getAllFiltered(String text, String username) {
+        log.info("Fetching all todos where text: {}, and username: {}", text, username);
+        if (text == null && username == null) {return getAll();}
+//        if (username == null) { username = "";}
+//        if (text == null) { text = "";}
+
+        List<Todo> todos = todoRepository.findAllFiltered(text, username);
+
+        return todos.stream().map(TodoMapper::toDto).toList();
     }
 
     @Override

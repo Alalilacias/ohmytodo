@@ -4,7 +4,7 @@ import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.enums.Role;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
-import com.ohmy.todo.exception.UserDoesNotExistException;
+import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.model.User;
@@ -128,7 +128,7 @@ class UserServiceImplTest {
     void testDeleteBySecurityContextHolderWhenNotExists(){
         when(userRepository.findByUsername("Ghost")).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.deleteBySecurityContextHolder());
+        assertThrows(UserNotFoundException.class, () -> userService.deleteBySecurityContextHolder());
     }
     @Test
     void testDeleteBySecurityContextHolderWhenUnauthenticated() {
@@ -151,6 +151,6 @@ class UserServiceImplTest {
     void testLoadUserByUsernameWhenNotExists() {
         when(userRepository.findByUsername("NotMiranda")).thenReturn(Optional.empty());
 
-        assertThrows(UserDoesNotExistException.class, () -> userService.loadUserByUsername("NotMiranda"));
+        assertThrows(UserNotFoundException.class, () -> userService.loadUserByUsername("NotMiranda"));
     }
 }

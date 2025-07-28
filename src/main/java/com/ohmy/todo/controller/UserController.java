@@ -33,13 +33,13 @@ public class UserController {
 
     @Operation(
             summary = "Create a new user",
-            description = "Registers a new user using the provided registration details"
+            description = "Registers a new user using the provided registration details",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User successfully created"),
+                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                    @ApiResponse(responseCode = "409", description = "User already exists")
+            }
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User successfully created"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists")
-    })
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserRegistrationRequest request) {
         return ResponseEntity.ok(userService.add(request));
