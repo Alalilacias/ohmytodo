@@ -208,24 +208,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "delete_user_alice",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
-							"host": [
-								"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -245,8 +227,145 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "create_todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.collectionVariables.set(\"todo_id\", \"/\" + response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"title\": \"a\",\n  \"completed\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_todo_incorrect",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": -3,\n  \"title\": \"\",\n  \"completed\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_by_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id}}",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}{{todo_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_filter_text",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}/filter?text=balcony",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}"
+							],
+							"path": [
+								"filter"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "balcony"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_all_filter_username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local_url}}{{base_endpoint}}{{todos_endpoint}}/filter?username=montanaflorencio",
+							"host": [
+								"{{local_url}}{{base_endpoint}}{{todos_endpoint}}"
+							],
+							"path": [
+								"filter"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "montanaflorencio"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "delete_user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{local_url}}{{base_endpoint}}{{users_endpoint}}",
+					"host": [
+						"{{local_url}}{{base_endpoint}}{{users_endpoint}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -296,6 +415,10 @@
 			"key": "todos_endpoint",
 			"value": "/todos",
 			"type": "string"
+		},
+		{
+			"key": "todo_id",
+			"value": ""
 		}
 	]
 }
