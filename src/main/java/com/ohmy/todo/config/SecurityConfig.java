@@ -22,6 +22,8 @@ public class SecurityConfig {
     final private AuthenticationProvider authenticationProvider;
 
     private static final String[] PUBLIC_GET_ENDPOINTS = {
+            "/favicon.ico",
+            "/images/*",
             "/",
             "/api/users/all",
             "/api/todos",

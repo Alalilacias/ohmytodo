@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
+    // TODO: look at pagination.
     @Query("""
     SELECT t FROM Todo t
     WHERE (:text IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :text, '%')))
