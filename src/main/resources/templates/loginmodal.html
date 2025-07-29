@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="login-modal">
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-white text-dark">
+        <form id="loginForm">
+        <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel" th:text="#{auth.login}">Login</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="login-username" class="form-label" th:text="#{auth.username}">Username</label>
+              <input type="text" class="form-control" id="login-username" name="username" required />
+            </div>
+            <div class="mb-3">
+              <label for="login-password" class="form-label" th:text="#{auth.password}">Password</label>
+              <input type="password" class="form-control" id="login-password" name="password" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-link" data-bs-target="#registerModal" data-bs-toggle="modal"
+               data-bs-dismiss="modal" th:text="#{auth.login2}">No account? Register</a>
+            <button type="submit" class="btn btn-primary" th:text="#{auth.login.submit}">Login</button>
+          </div>
+        </form>
+        <script>
+          document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            const res = await fetch('/api/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, password })
+            });
+
+            const msg = document.createElement('div');
+            msg.classList.add('alert', 'mt-2', 'fade', 'show');
+            msg.setAttribute('role', 'alert');
+
+            if (res.ok) {
+              msg.classList.add('alert-success');
+              msg.innerText = 'Login successful!';
+              // Optional: reload page or close modal
+              setTimeout(() => location.reload(), 1000);
+            } else {
+              msg.classList.add('alert-danger');
+              msg.innerText = 'Login failed. Please check your credentials.';
+            }
+
+            this.appendChild(msg);
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

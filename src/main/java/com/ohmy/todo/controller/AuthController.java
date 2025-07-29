@@ -13,10 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,7 +28,7 @@ public class AuthController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Login credentials",
                     required = true,
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginRequest.class))
+                    content = @Content(mediaType = "application/x-www-form-urlencoded", schema = @Schema(implementation = LoginRequest.class))
             ),
             responses = {
                     @ApiResponse(

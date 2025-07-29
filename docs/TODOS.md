@@ -51,12 +51,12 @@ Tareas pendientes, para organizar los futuros features y commits.
 - [X] Incluir estructura y recursos compartidos (head, footer, etc.)
 
 ### Feature/prelogin
-- [ ] Crear página de login
-- [ ] Crear página de registro
+- [ ] Dashboard: vista general de TODOs
+- [X] Crear página de login
+- [X] Crear página de registro
 - [ ] Crear vista de error/no autorizado
 
 ### Feature/poslogin
-- [ ] Dashboard: vista general de TODOs
 - [ ] Página de creación/edición de TODOs
 - [ ] Página de configuración de usuario / perfil
 - [ ] Botón de logout y feedback visual de sesión

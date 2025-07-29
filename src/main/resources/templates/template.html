@@ -17,11 +17,16 @@
             <img th:src="@{/images/todo_icon.png}" alt="logo" width="40" height="40" />
             <span class="h5 mb-0">OhMyTodo</span>
         </div>
-        <div th:replace="~{langbutton :: lang-switcher}"></div>
+        <div class="d-flex align-items-center gap-2">
+            <div th:replace="~{langbutton :: lang-switcher}"></div>
+            <div th:replace="~{authbutton :: auth-button}"></div>
+        </div>
     </div>
 </header>
 
-<main class="container my-4 flex-grow-1" th:replace="${content}"></main>
+<main class="container my-4 flex-grow-1" th:replace="${content}">
+    <div id="alert-container" style="position:absolute; top:0.5rem; right:0; z-index:1055; max-width: 300px;"></div>
+</main>
 
 <footer class="bg-dark text-white text-center py-2 mt-auto">
     <small th:text="#{footer.copyright}">© 2025 OhMyTodo. All rights reserved.</small>

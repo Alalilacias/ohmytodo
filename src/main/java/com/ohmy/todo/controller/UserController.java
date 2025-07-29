@@ -33,6 +33,11 @@ public class UserController {
     @Operation(
             summary = "Create a new user",
             description = "Registers a new user using the provided registration details",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "User information, necessary for registration",
+                    required = true,
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserRegistrationRequest.class))
+            ),
             responses = {
                     @ApiResponse(responseCode = "200", description = "User successfully created"),
                     @ApiResponse(responseCode = "400", description = "Invalid input data"),
