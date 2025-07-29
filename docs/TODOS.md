@@ -47,8 +47,8 @@ Tareas pendientes, para organizar los futuros features y commits.
 ## Frontend (Dividido por Plantillas)
 
 ### Feature/frontemplate
-- [ ] Definir plantilla HTML base
-- [ ] Incluir estructura y recursos compartidos (head, footer, estilos globales)
+- [X] Definir plantilla HTML base
+- [X] Incluir estructura y recursos compartidos (head, footer, etc.)
 
 ### Feature/prelogin
 - [ ] Crear página de login
