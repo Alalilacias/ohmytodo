@@ -31,6 +31,11 @@ public class TodoController {
 
     @Operation(summary = "Create a new TODO",
             description = "Registers a new todo using the provided data",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Todo information for creation",
+                    required = true,
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = TodoRegistrationRequest.class))
+            ),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Todo successfully created"),
                     @ApiResponse(responseCode = "400", description = "Invalid input data")
@@ -53,6 +58,22 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getCompleteResponse(id));
     }
 
+    @Operation(
+            summary = "Get filtered TODOs",
+            description = "Retrieves a paginated list of TODOs filtered by text and/or username",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Todos successfully retrieved",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid pagination parameters",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OhMyTodoError.class))
+                    )
+            }
+    )
     @GetMapping("/filter")
     public ResponseEntity<PageResponse<TodoDto>> getAllFiltered(
             @RequestParam(required = false) String text,
