@@ -28,7 +28,10 @@
         </div>
 
         <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100" th:text="#{todotable.filter.search}">Search</button>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1" th:text="#{todotable.filter.search}">Search</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createTodoModal" th:text="#{todotable.create}">Create</button>
+            </div>
         </div>
     </form>
 
@@ -40,10 +43,11 @@
                 <th th:text="#{todotable.column.username}">Username</th>
                 <th th:text="#{todotable.column.country}">Country</th>
                 <th th:text="#{todotable.column.completed}">Completed</th>
+                <th th:text="#{todotable.column.actions}">Actions</th>
             </tr>
             </thead>
             <tbody id="todo-table-body">
-            <tr><td colspan="4" th:text="#{todotable.loading}">Loading...</td></tr>
+            <tr><td colspan="5" th:text="#{todotable.loading}">Loading...</td></tr>
             </tbody>
         </table>
     </div>
@@ -51,6 +55,9 @@
     <nav>
         <ul class="pagination justify-content-center" id="pagination"></ul>
     </nav>
+
+    <div th:replace="~{createtodomodal :: create-todo-modal}"></div>
+    <div th:replace="~{edittodomodal :: edit-todo-modal}"></div>
 
     <script th:src="@{/scripts/todo.js}" defer></script>
 </div>

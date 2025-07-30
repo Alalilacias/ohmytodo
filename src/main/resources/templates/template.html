@@ -11,6 +11,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
+
+<div th:replace="~{alerts :: alert-container}"></div>
+
 <header class="bg-dark text-white py-2">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
@@ -24,9 +27,7 @@
     </div>
 </header>
 
-<main class="my-4 flex-grow-1" th:replace="${content}">
-    <div th:replace="~{fragments/alerts :: alert-container}"></div>
-</main>
+<main class="my-4 flex-grow-1" th:replace="${content}"></main>
 
 <footer class="bg-dark text-white text-center py-2 mt-auto">
     <small th:text="#{footer.copyright}">© 2025 OhMyTodo. All rights reserved.</small>
