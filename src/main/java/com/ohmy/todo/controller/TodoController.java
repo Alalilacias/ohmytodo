@@ -4,6 +4,7 @@ import com.ohmy.todo.dto.TodoDto;
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
 import com.ohmy.todo.dto.request.TodoUpdateRequest;
 import com.ohmy.todo.dto.response.CompleteTodoResponse;
+import com.ohmy.todo.dto.response.PageResponse;
 import com.ohmy.todo.exception.OhMyTodoError;
 import com.ohmy.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -55,12 +54,21 @@ public class TodoController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Page<TodoDto>> getAllFiltered(
+    public ResponseEntity<PageResponse<TodoDto>> getAllFiltered(
             @RequestParam(required = false) String text,
             @RequestParam(required = false) String username,
             @PageableDefault(size = 20, sort = "id") Pageable pageable
     ) {
-        return ResponseEntity.ok(todoService.getAllFiltered(text, username, pageable));
+        Page<TodoDto> page = todoService.getAllFiltered(text, username, pageable);
+        return ResponseEntity.ok(new PageResponse<>(
+                page.getContent(),
+                page.getTotalPages(),
+                page.getNumber(),
+                page.isFirst(),
+                page.isLast(),
+                page.getSize(),
+                page.getNumberOfElements()
+        ));
     }
 
 

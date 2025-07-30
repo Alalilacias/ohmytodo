@@ -4,10 +4,8 @@
     <title>OhMyTodo Home</title>
 </head>
 <body>
-<section>
-    <div class="text-center">
-        <h2 th:text="#{messages.welcome}">Welcome to OhMyTodo!</h2>
-    </div>
+<section class="mb-5">
+    <div th:replace="~{todotable :: todotable-fragment}"></div>
 </section>
 </body>
 </html>

@@ -71,6 +71,7 @@ public class TodoServiceImpl implements TodoService {
     public Page<TodoDto> getAllFiltered(String text, String username, Pageable pageable) {
         log.info("Fetching filtered todos with text={} and username={}", text, username);
         if (text == null && username == null) {return todoRepository.findAll(pageable).map(TodoMapper::toDto);}
+
         return todoRepository.findAllFiltered(text, username, pageable)
                 .map(TodoMapper::toDto);
     }

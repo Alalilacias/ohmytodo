@@ -12,7 +12,7 @@ public final class UserMapper {
     }
 
     public static UserDto toDto(User user) {
-        return new UserDto(user.getId(), user.getUsername());
+        return new UserDto(user.getId(), user.getUsername(), user.getAddress().getCountry());
     }
     public static CompleteUserDto toCompleteUserDto(User user){
         return new CompleteUserDto(

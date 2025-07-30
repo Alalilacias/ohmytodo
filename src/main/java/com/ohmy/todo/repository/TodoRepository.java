@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    // TODO: look at pagination.
     @Query("""
     SELECT t FROM Todo t
-    WHERE (:text IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :text, '%')))
+    WHERE (:text IS NULL OR t.title LIKE %:text%)
     AND (:username IS NULL OR t.user.username = :username)
-""")
-    Page<Todo> findAllFiltered(@Param("text") String text, @Param("username") String username, Pageable pageable);
+    """)
+    Page<Todo> findAllFiltered(
+            @Param("text") String text,
+            @Param("username") String username,
+            Pageable pageable
+    );
 }
