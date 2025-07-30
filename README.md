@@ -14,7 +14,17 @@
 
 Este README fue hecho basándome en una plantilla que he visto en uso en mis proyectos FOSS favoritos. Le he quitado muchos detalles que creo que no son necesarios para un proyecto hecho para una entrevista de trabajo, pero he dejado algunas cosas que me gustaban.
 
-El proyecto sigue las especificaciones facilitadas por correo, que se pueden revisar en la carpeta de docs, bajo el nombre `omc_prueba_tecnica_pring.pdf`.
+El proyecto sigue las especificaciones facilitadas por correo, que se pueden revisar en la carpeta de docs, bajo el nombre `omc_prueba_tecnica_pring.pdf`. Así, siguiendo estas especificaciones, se escogieron Spring Boot y Thymeleaf como combinación de Backend y Frontend.
+
+Como base de datos, se utilizó PostgreSQL, por tener experiencia en proyectos propios con ella y por su versatilidad y su característica relacional. Así mismo, si bien mi experiencia me llevaba más hacia el uso de JWT para la seguridad, escogí Redis y Spring Session para la seguridad de este proyecto, con endpoints customizados y una gestión del usuario que no requiere el guardado de un token en el navegador del usuario, sino una cookie que el servidor se encarga de gestionar y resolver. Si bien esto requiere más memoria por parte del servidor, mejora mucho la experiencia del usuario final.
+
+La documentación se ha hecho primordialmente mediante un seguimiento de buenas prácticas de nombres (aunque debo mencionar que sé generar documentación javadoc, pero no quise hacer poco agradable a la vista el repositorio) y SpringDoc OpenAPI.
+
+En cuanto al testing, se ha hecho utilizando Mockito, JUnit 5 y H2 para evitar iniciar el repositorio cada vez que se hicieran pruebas. Así mismo, todos los endpoints fueron probados mediante Postman y organizados en una colección el JSON de la cual es parte de este repositorio, por lo que se puede descargar, importar a JSON y ejecutar casi inmediatamente.
+
+Por último, para mayor portabilidad, el proyecto se preparó de tal manera que el único requerimiento para utilizarlo sea Docker. Docker compose es necesario también, en sistemas Linux, pero en un sistema Windows debería bastar con instalar Docker Desktop.
+
+Ha sido una excelente experiencia de proyecto y estoy abierto a cualquier pregunta que puedan tener sobre él.
 
 ### Tecnologías utilizadas
 
@@ -27,7 +37,7 @@ El proyecto sigue las especificaciones facilitadas por correo, que se pueden rev
 
 ## Preparación para ejecución
 
-En esta sección está la información sobre los requisitos y el proceso para iniciar el funcionamiento de este proyecto en el entorno local, está diseñado para funcionar en Windows o Linux.
+En esta sección está la información sobre los requisitos y el proceso para ejecutar este proyecto en un entorno local, ha sido probado en Windows y Linux, aunque debería funcionar en un Mac, asumiendo la existencia de Docker y Docker Compose.
 
 ### Requisitos previos
 
@@ -61,7 +71,7 @@ docker compose version
 
 La instalación consiste de tres pasos: clonar el repositorio de GitHub, entrar a él e iniciar su construcción mediante docker compose.
 
-1. Clona el repositorio:
+1. Clone el repositorio:
 
    #### Linux (terminal) y Windows (PowerShell)
 
@@ -70,7 +80,7 @@ La instalación consiste de tres pasos: clonar el repositorio de GitHub, entrar 
    cd ohmytodo
    ```
 
-2. Construye e inicia los contenedores:
+2. Construya e inicie los contenedores:
 
    #### Linux y Windows
 
@@ -88,8 +98,6 @@ La instalación consiste de tres pasos: clonar el repositorio de GitHub, entrar 
 Una vez iniciado todo correctamente:
 
 - Abra su navegador y acceda a: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) donde podrá leer la documentación de swagger del repositorio.
-
-Perfecto. Aquí tienes una redacción profesional y clara para la sección `## Pruebas en el proyecto`, dividida en las partes que mencionas:
 
 ## Pruebas en el proyecto
 
