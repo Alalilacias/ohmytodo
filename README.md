@@ -105,23 +105,23 @@ El desarrollo de esta aplicación se ha basado en decisiones tomadas a partir de
 
 Si bien en un entorno de producción se utilizaría otro Frontend capaz de interactuar con un Backend de API REST o se utilizaría de manera correcta un modelo MVC, en este caso se ha optado por un modelo mixto para mostrar mis capacidades y para ceñirme a los requisitos de la prueba.
 
-### 🧪 Pruebas con Postman
+### Pruebas con Postman
 
 La API puede ser probada directamente mediante [Postman](https://www.postman.com/), utilizando una colección preparada específicamente para este fin. Para hacerlo:
 
-1. Abre Postman, entre a un workspace y localice el botón de `Import` a la derecha de las colecciones.
+1. Abra Postman, entre a un workspace y localice el botón de `import` a la derecha de las colecciones.
 2. Diríjase a la ruta `src/test/postman/` del proyecto.
 3. Descargue el archivo `OhMyTodo.postman_collection.json`.
-4. En Postman, haz clic en **Import** y seleccione o arrastre el archivo copiado.
-5. Ejecuta todas las peticiones disponibles para probar el comportamiento de los endpoints (registro de usuarios, login, creación de tareas, etc.).
+4. En Postman, arrastre o haga clic en **import** y seleccione el archivo copiado.
+5. Ejecute todas las peticiones disponibles para probar el comportamiento de los endpoints (registro de usuarios, login, creación de tareas, etc.).
 
-### 🌐 Pruebas desde el navegador
+### Pruebas desde el navegador
 
 También se puede interactuar con la aplicación desde la interfaz web:
 
 1. Asegúrese de que la aplicación esté corriendo (`http://localhost:8080`).
 2. Abra su navegador y acceda a [http://localhost:8080/index](http://localhost:8080/index).
-3. Desde allí podrás usar todas las funcionalidades disponibles como usuario registrado (registro, login, creación y visualización de tareas).
+3. Desde allí podrá usar todas las funcionalidades disponibles como usuario registrado (registro, login, creación y visualización de tareas).
 4. Algunas peticiones requieren autorización de usuario, pero el sistema se encargará de aclarar cuáles son cuando se realicen de manera errónea.
 
 [SpringBoot-badge]: https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white
