@@ -70,48 +70,6 @@
             <button type="submit" class="btn btn-success" th:text="#{auth.register.submit}">Register</button>
           </div>
         </form>
-        <script>
-          document.getElementById('registerForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const form = e.target;
-            const formData = new FormData(form);
-
-            const jsonData = {
-              name: formData.get("name"),
-              username: formData.get("username"),
-              password: formData.get("password"),
-              address: {
-                street: formData.get("address.street"),
-                city: formData.get("address.city"),
-                zipcode: formData.get("address.zipcode"),
-                country: formData.get("address.country")
-              }
-            };
-
-            const res = await fetch('/api/users', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(jsonData)
-            });
-
-            const msg = document.createElement('div');
-            msg.classList.add('alert', 'mt-2', 'fade', 'show');
-            msg.setAttribute('role', 'alert');
-
-            if (res.ok) {
-              msg.classList.add('alert-success');
-              msg.innerText = 'Registration successful!';
-              setTimeout(() => location.reload(), 1000);
-            } else {
-              const text = await res.text();
-              msg.classList.add('alert-danger');
-              msg.innerText = 'Registration failed: ' + text;
-            }
-
-            this.appendChild(msg);
-          });
-        </script>
       </div>
     </div>
   </div>

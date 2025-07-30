@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,30 +54,15 @@ public class TodoController {
         return ResponseEntity.ok(todoService.getCompleteResponse(id));
     }
 
-    @Operation(summary = "Get all TODOs",
-            description = "Fetches a list of all todos available in the system",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Todos successfully retrieved")
-            }
-    )
-    @GetMapping
-    public ResponseEntity<List<TodoDto>> getAll(){
-        return ResponseEntity.ok(todoService.getAll());
+    @GetMapping("/filter")
+    public ResponseEntity<Page<TodoDto>> getAllFiltered(
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) String username,
+            @PageableDefault(size = 20, sort = "id") Pageable pageable
+    ) {
+        return ResponseEntity.ok(todoService.getAllFiltered(text, username, pageable));
     }
 
-    @Operation(summary = "Filter TODOs",
-            description = "Fetches a list of todos matching the given filters: partial text match and exact username.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Filtered todos successfully retrieved")
-            }
-    )
-    @GetMapping("/filter")
-    public ResponseEntity<List<TodoDto>> getAllFiltered(
-            @RequestParam(required = false) String text,
-            @RequestParam(required = false) String username
-    ) {
-        return ResponseEntity.ok(todoService.getAllFiltered(text, username));
-    }
 
     @Operation(summary = "Update an existing Todo.",
             description = "Compares the given TODOs information and modifies the modifiable parts." +

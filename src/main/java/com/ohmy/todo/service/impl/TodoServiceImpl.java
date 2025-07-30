@@ -16,10 +16,10 @@ import com.ohmy.todo.service.UserService;
 import com.ohmy.todo.utils.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -68,23 +68,11 @@ public class TodoServiceImpl implements TodoService {
 
     @Transactional
     @Override
-    public List<TodoDto> getAll() {
-        log.info("Fetching all todos");
-        return todoRepository.findAll()
-                .stream()
-                .map(TodoMapper::toDto)
-                .toList();
-    }
-
-    @Transactional
-    @Override
-    public List<TodoDto> getAllFiltered(String text, String username) {
-        log.info("Fetching all todos where text: {}, and username: {}", text, username);
-        if (text == null && username == null) {return getAll();}
-
-        List<Todo> todos = todoRepository.findAllFiltered(text, username);
-
-        return todos.stream().map(TodoMapper::toDto).toList();
+    public Page<TodoDto> getAllFiltered(String text, String username, Pageable pageable) {
+        log.info("Fetching filtered todos with text={} and username={}", text, username);
+        if (text == null && username == null) {return todoRepository.findAll(pageable).map(TodoMapper::toDto);}
+        return todoRepository.findAllFiltered(text, username, pageable)
+                .map(TodoMapper::toDto);
     }
 
     @Transactional

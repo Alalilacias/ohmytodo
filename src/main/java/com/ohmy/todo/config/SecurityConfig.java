@@ -24,7 +24,8 @@ public class SecurityConfig {
     private static final String[] PUBLIC_GET_ENDPOINTS = {
             "/favicon.ico",
             "/images/*",
-            "/",
+            "/scripts/*",
+            "/index",
             "/api/users/all",
             "/api/todos",
             "/api/todos/*"

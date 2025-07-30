@@ -28,7 +28,7 @@ public class AuthController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Login credentials",
                     required = true,
-                    content = @Content(mediaType = "application/x-www-form-urlencoded", schema = @Schema(implementation = LoginRequest.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginRequest.class))
             ),
             responses = {
                     @ApiResponse(

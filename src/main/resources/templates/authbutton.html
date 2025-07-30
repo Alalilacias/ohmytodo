@@ -14,34 +14,7 @@
         </button>
     </form>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const logoutForm = document.getElementById("logoutForm");
-            if (logoutForm) {
-                logoutForm.addEventListener("submit", async function (e) {
-                    e.preventDefault();
 
-                    const res = await fetch('/api/auth/logout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
-                    });
-
-                    const msg = document.createElement('div');
-                    msg.classList.add('alert', 'mt-3', 'fade', 'show');
-                    msg.setAttribute('role', 'alert');
-
-                    if (res.ok) {
-                        msg.classList.add('alert-success');
-                        msg.innerText = 'Logout successful!';
-                        document.body.prepend(msg);
-                        setTimeout(() => location.reload(), 1000);
-                    } else {
-                        msg.classList.add('alert-danger');
-                        msg.innerText = 'Logout failed.';
-                        document.body.prepend(msg);
-                    }
-                });
-            }
-        });
     </script>
 
     <div th:replace="~{loginmodal :: login-modal}" sec:authorize="!isAuthenticated()"></div>
