@@ -57,7 +57,7 @@ Tareas pendientes, para organizar los futuros features y commits.
 - [X] Crear vista de error/no autorizado
 
 ### Feature/poslogin
-- [ ] Página de creación/edición de TODOs
+- [X] Página de creación/edición de TODOs
 - [X] Botón de logout y feedback visual de sesión
 
 ---

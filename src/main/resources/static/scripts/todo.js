@@ -471,20 +471,18 @@ elements.editTodoForm?.addEventListener('submit', async function(e) {
             errorMessage.remove();
         }, 5000);
     } finally {
-        // Restore button state
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
     }
 });
 
-// FINAL FIXED DELETE FUNCTION - Updated for plain text responses
+// DELETE FUNCTION
 async function deleteTodo(todoId) {
     if (!todoId || !confirm('Are you sure you want to delete this todo?')) {
         return;
     }
 
     try {
-        // Show loading state
         try {
             showAlert('Deleting todo...', 'info');
         } catch (alertError) {
@@ -499,28 +497,23 @@ async function deleteTodo(todoId) {
             }
         });
 
-        // First check if response is ok (2xx status)
         if (response.ok) {
-            // Handle plain text success response
             const successMessage = await response.text();
             showAlert(successMessage || 'Todo deleted successfully!', 'success');
             fetchTodos(state.currentPage);
             return;
         }
 
-        // Try to parse error response as JSON (for error cases)
         let errorData;
         try {
             errorData = await response.json();
         } catch (e) {
-            // If response isn't JSON, use status text
             throw {
                 status: response.status,
                 message: response.statusText || 'Delete failed'
             };
         }
 
-        // Handle structured OhMyTodoError
         if (errorData.status && errorData.message) {
             const error = {
                 status: errorData.status,
@@ -528,7 +521,6 @@ async function deleteTodo(todoId) {
                 data: errorData
             };
 
-            // Special handling for auth errors
             if (error.status === 401) {
                 showAlert(error.message || 'Please login to delete todos', 'danger');
                 const loginButton = document.querySelector('[data-bs-target="#loginModal"]');
@@ -543,7 +535,6 @@ async function deleteTodo(todoId) {
             return;
         }
 
-        // Fallback for non-standard error responses
         throw {
             status: response.status,
             message: errorData.message || `Delete failed with status ${response.status}`
@@ -601,9 +592,9 @@ function showAlert(message, type) {
     `;
 
     const alertElement = alertContainer.querySelector('.alert');
-    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertElement); // ✅ explicitly initialize
+    const bsAlert = bootstrap.Alert.getOrCreateInstance(alertElement); //
 
     setTimeout(() => {
-        bsAlert.close(); // ✅ works now
-    }, 5000);
+        bsAlert.close();
+    }, 2500);
 }
