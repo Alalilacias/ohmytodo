@@ -1,11 +1,9 @@
-package com.ohmy.todo.controller;
+package com.ohmy.todo.controller.api;
 
 import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
 import com.ohmy.todo.exception.OhMyTodoError;
 import com.ohmy.todo.model.User;
-import com.ohmy.todo.service.AuthService;
-import com.ohmy.todo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,20 +13,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@RestController
-@RequestMapping("/api/users")
 @Tag(name = "Users", description = "Controller for the management of user operations")
-public class UserController {
-
-    final private UserService userService;
-    final private AuthService authService;
+public interface UserApi {
 
     @Operation(
             summary = "Create a new user",
@@ -44,11 +34,7 @@ public class UserController {
                     @ApiResponse(responseCode = "409", description = "User already exists")
             }
     )
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserRegistrationRequest request) {
-        return ResponseEntity.ok(userService.add(request));
-    }
-
+    ResponseEntity<UserDto> createUser(UserRegistrationRequest request);
 
     @Operation(summary = "Get the currently authenticated user",
             description = "Returns the full user entity of the authenticated user using the security context.",
@@ -66,28 +52,22 @@ public class UserController {
                     )
             }
     )
-    @GetMapping
-    public ResponseEntity<User> getUser() {
-        return ResponseEntity.ok(userService.getUserBySecurityContextHolder());
-    }
+    ResponseEntity<User> getUser();
 
     @Operation(summary = "Get a list of the DTOs of all users. This does not require authentication, as per the user story",
             description = "Returns a list containing the username and ID of all users.",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "correctly returned",
-                        content = @Content(
-                                mediaType = "application/json",
-                                array = @ArraySchema(schema = @Schema(implementation = UserDto.class))
-                        )
-                )
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "correctly returned",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = UserDto.class))
+                            )
+                    )
             }
     )
-    @GetMapping("/all")
-    public ResponseEntity<List<UserDto>> getUsers(){
-        return ResponseEntity.ok(userService.getAll());
-    }
+    ResponseEntity<List<UserDto>> getUsers();
 
     @Operation(summary = "Delete the currently authenticated user",
             description = "Deletes the authenticated user based on the security context, then logs them out.",
@@ -110,11 +90,5 @@ public class UserController {
                     ),
             }
     )
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteUser(HttpServletRequest request, HttpServletResponse response){
-        boolean isDeleted = userService.deleteBySecurityContextHolder();
-        boolean isLoggedOut = authService.logout(request, response);
-
-        return ResponseEntity.ok(isDeleted && isLoggedOut);
-    }
+    ResponseEntity<Boolean> deleteUser(HttpServletRequest request, HttpServletResponse response);
 }

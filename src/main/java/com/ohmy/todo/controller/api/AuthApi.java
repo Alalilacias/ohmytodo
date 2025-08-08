@@ -1,8 +1,7 @@
-package com.ohmy.todo.controller;
+package com.ohmy.todo.controller.api;
 
 import com.ohmy.todo.dto.request.LoginRequest;
 import com.ohmy.todo.exception.OhMyTodoError;
-import com.ohmy.todo.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,17 +10,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@RequiredArgsConstructor
-@RestController
-@RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Controller for the management of authentication operations")
-public class AuthController {
-
-    private final AuthService authService;
+public interface AuthApi {
 
     @Operation(summary = "Authenticate a user",
             description = "Authenticates the user with the provided login credentials and stores the session using cookies.",
@@ -43,12 +36,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
-        boolean success = authService.login(request, httpRequest);
-        if (success) return ResponseEntity.ok("Login successful");
-        return ResponseEntity.status(401).body("Login failed");
-    }
+    ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest);
 
     @Operation(
             summary = "Log out the currently authenticated user",
@@ -72,9 +60,5 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        boolean success = authService.logout(request, response);
-        return ResponseEntity.ok("Logout successful: " + success);
-    }
+    ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response);
 }

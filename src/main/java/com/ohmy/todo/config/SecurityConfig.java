@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Slf4j
@@ -44,15 +43,9 @@ public class SecurityConfig {
             "/v3/api-docs/**"
     };
 
-    // Uncomment and modify as desired if you wish to have another frontend reach out to this backend
-//    private static final List<String> CORS_ALLOWED_ORIGINS = List.of("http://localhost:3000");
-//    private static final List<String> CORS_ALLOWED_METHODS = List.of("GET", "POST", "PATCH", "DELETE");
-//    private static final List<String> CORS_ALLOWED_HEADERS = List.of("*");
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-//                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests(requests -> requests
@@ -62,8 +55,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler((request, response, ex) -> {
-                            log.warn("Access denied at {} | Auth: {}", request.getRequestURI(),
-                                    SecurityContextHolder.getContext().getAuthentication());
+                            log.warn("Access denied at {}", request.getRequestURI());
                             response.setStatus(HttpStatus.FORBIDDEN.value());
                             response.setContentType("application/json");
                             response.getWriter().write("{\"status\":403,\"message\":\"Access denied\"}");
@@ -78,20 +70,4 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }
-
-//    The CORS configuration is added in case it was desired to test it with an external frontend.
-//    It is included due to previous issues with frontends if not included
-//    Uncomment and modify as desired if you wish to have another frontend reach out to this backend
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(CORS_ALLOWED_ORIGINS);
-//        config.setAllowedMethods(CORS_ALLOWED_METHODS);
-//        config.setAllowedHeaders(CORS_ALLOWED_HEADERS);
-//        config.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//        return source;
-//    }
 }
