@@ -1,11 +1,11 @@
 # --- Build Stage ---
-FROM eclipse-temurin:21-jdk AS builder
+FROM 	eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 COPY . .
 RUN ./gradlew clean bootJar
 
 # --- Run Stage ---
-FROM eclipse-temurin:21-jdk AS runtime
+FROM eclipse-temurin:21-jre-alpine AS runtime
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
