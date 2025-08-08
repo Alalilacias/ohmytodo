@@ -4,15 +4,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - redis
       - db
-    networks:
-      - backend
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
     networks:
       - backend
 
@@ -28,7 +20,6 @@ services:
       - backend
 
 volumes:
-  redis-data:
   postgres-data:
 
 networks:
