@@ -1,18 +1,28 @@
 <li class="nav-item dropdown" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="lang-switcher">
+    <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        <img class="rounded-circle"
+             th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+             alt="lang" width="20" height="20"/>
+        <span th:text="${#locale.language.toUpperCase()}">EN</span>
+    </a>
     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
         <li th:if="${#locale.language != 'es'}">
             <a class="dropdown-item" href="#" th:src="@{/images/es_flag.png}" th:href="@{?lang=es}">
-                <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image">
+                <img class="rounded" src="#" th:src="@{/images/es_flag.png}" alt="es_image" width="20" height="20">
+                <span th:text="#{language.spanish}"></span>
             </a>
         </li>
         <li th:if="${#locale.language != 'ca'}">
             <a class="dropdown-item" href="#" th:src="@{/images/ca_flag.png}" th:href="@{?lang=ca}">
-                <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image">
+                <img class="rounded" src="#" th:src="@{/images/ca_flag.png}" alt="cat_image" width="20" height="20">
+                <span th:text="#{language.catalan}"></span>
             </a>
         </li>
         <li th:if="${#locale.language != 'en'}">
             <a class="dropdown-item" href="#" th:src="@{/images/en_flag.png}" th:href="@{?lang=en}">
-                <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image">
+                <img class="rounded" src="#" th:src="@{/images/en_flag.png}" alt="en_image" width="20" height="20">
+                <span th:text="#{language.english}"></span>
             </a>
         </li>
     </ul>

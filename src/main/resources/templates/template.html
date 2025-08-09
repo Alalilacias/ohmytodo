@@ -16,7 +16,8 @@
 <body class="d-flex flex-column min-vh-100">
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
     <a class="navbar-brand" th:href="@{/index}">
-        <img th:src="@{/images/todo_icon.png}" th:text="#{base.title}" alt="nav_logo" width="40">
+        <img th:src="@{/images/todo_icon.png}" alt="nav_logo" width="40">
+        <span th:text="#{base.title}"></span>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto">
