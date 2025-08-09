@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{template :: layout(~{::title}, ~{::section})}">
+<html lang="en" th:replace="~{template :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>OhMyTodo Home</title>
-</head>
+    <title th:text="#{base.title}"></title></head>
 <body>
-<section class="mb-5">
-    <div th:replace="~{todotable :: todotable-fragment}"></div>
+<section>
+    <div class="container-fluid" >
+        <h1>Hello</h1>
+    </div>
 </section>
 </body>
 </html>

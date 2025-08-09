@@ -21,13 +21,16 @@ public class SecurityConfig {
     final private AuthenticationProvider authenticationProvider;
 
     private static final String[] PUBLIC_GET_ENDPOINTS = {
+            // Pre-requisites for frontend
             "/favicon.ico",
             "/images/*",
             "/scripts/*",
-            "/index",
+            // REST endpoints
             "/api/users/all",
             "/api/todos",
-            "/api/todos/*"
+            "/api/todos/*",
+            // MVC endpoints
+            "/index",
     };
 
     private static final String[] PUBLIC_POST_ENDPOINTS = {
