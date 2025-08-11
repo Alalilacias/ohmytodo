@@ -15,7 +15,15 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password" th:text="#{auth.password}"></label>
-                    <input class="form-control" id="password" type="password" name="password" th:field="*{username}" required>
+                    <div class="input-group">
+                        <input class="form-control" id="password" type="password" name="password" th:field="*{password}" required>
+                        <button type="button" class="btn btn-outline-secondary" id="passwordToggle" tabindex="-1">
+                            <i id="passwordToggleIcon" class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3" th:if="${loginError}">
+                    <div class="alert alert-danger" role="alert" th:text="${loginMessage}"></div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -24,6 +32,7 @@
                 </div>
             </form>
         </div>
+        <script th:src="@{/scripts/login.js}"></script>
     </div>
 </section>
 </body>

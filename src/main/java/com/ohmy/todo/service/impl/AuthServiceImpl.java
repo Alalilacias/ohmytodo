@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
             context.setAuthentication(auth);
             SecurityContextHolder.setContext(context);
 
-            HttpSession session = request.getSession(true); // creates session if not existing
+            HttpSession session = request.getSession(true); // creates session if it doesn't exist
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
             log.debug("User '{}' authenticated successfully. Session created.", loginRequest.username());
