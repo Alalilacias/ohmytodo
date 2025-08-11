@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{template :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="#{auth.login}"></title>
+</head>
+<body>
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-6 col-lg-4">
+            <h1 class="h4 mb-3" th:text="#{auth.login}"></h1>
+            <form th:action="@{/users/register}" th:object="${registrationRequest}" method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="name" th:text="#{auth.name}"></label>
+                    <input class="form-control" id="name" name="name" th:field="*{name}" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="username" th:text="#{auth.username}"></label>
+                    <input class="form-control" id="username" name="username" th:field="*{username}" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password" th:text="#{auth.password}"></label>
+                    <input class="form-control" id="password" type="password" name="password" th:field="*{password}" required>
+                </div>
+
+                <fieldset class="border rounded p-3 mb-3">
+                    <legend class="float-none w-auto px-2 mb-0" th:text="#{auth.address}"></legend>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="address_street" th:text="#{auth.address.street}"></label>
+                        <input class="form-control" id="address_street" th:field="*{address.street}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="address_city" th:text="#{auth.address.city}"></label>
+                        <input class="form-control" id="address_city" th:field="*{address.city}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="address_zipcode" th:text="#{auth.address.zipcode}"></label>
+                        <input class="form-control" id="address_zipcode" th:field="*{address.zipcode}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="address_country" th:text="#{auth.address.country}"></label>
+                        <input class="form-control" id="address_country" th:field="*{address.country}" required>
+                    </div>
+                </fieldset>
+
+                <div class="mb-3" th:if="${registerError}">
+                    <div class="alert alert-danger" role="alert" th:text="${registerErrorMessage}"></div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-primary" type="submit" th:text="#{auth.register}"></button>
+                    <a th:href="@{/auth/login}" class="btn btn-link p-0" th:text="#{auth.login}"></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

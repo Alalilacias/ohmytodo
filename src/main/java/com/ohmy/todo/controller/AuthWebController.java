@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
-@Controller()
+@Controller
 @RequestMapping("/auth")
 public class AuthWebController {
 
@@ -23,16 +24,16 @@ public class AuthWebController {
         model.addAttribute("loginRequest", new LoginRequest("", ""));
         return "login";
     }
-
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginRequest loginRequest, Model model, HttpServletRequest servletRequest){
+    public String login(@ModelAttribute LoginRequest loginRequest, Model model, RedirectAttributes redirectAttributes, HttpServletRequest servletRequest){
         boolean isLogged = authService.login(loginRequest, servletRequest);
 
         if (isLogged) {
+            redirectAttributes.addFlashAttribute("isTempModal", true);
+            redirectAttributes.addFlashAttribute("tempModalMessage", "Successfully logged in!");
             return "index";
         } else {
             model.addAttribute("loginError", true);
-            model.addAttribute("loginMessage", "Invalid credentials");
             return "login";
         }
     }

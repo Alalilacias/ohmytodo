@@ -24,8 +24,9 @@
             <li th:replace="~{langbutton :: lang-switcher}"></li>
         </ul>
     </div>
-    <button th:replace="~{loginbutton :: auth-button}"></button>>
+    <button th:replace="~{loginbutton :: auth-button}"></button>
 </nav>
+<div th:replace="~{tempmessagemodal :: message-modal}"></div>
 <div class="d-flex flex-grow-1" th:replace="${content}"></div>
 </body>
 <footer class="bg-dark text-center text-white pt-2 pb-1 fixed-bottom clearfix mt-auto">

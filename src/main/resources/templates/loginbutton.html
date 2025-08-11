@@ -1,7 +1,7 @@
 <div th:fragment="auth-button" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
     <a class="btn btn-outline-light ms-2" sec:authorize="!isAuthenticated()" th:href="@{/auth/login}">
         <i class="bi bi-box-arrow-in-right me-1"></i>
-        <span th:text="#{auth.login} + '/' + #{auth.logout}">Login</span>
+        <span th:text="#{auth.login} + '/' + #{auth.register}">Login</span>
     </a>
 
     <form class="d-inline ms-2" sec:authorize="isAuthenticated()" th:action="@{/auth/logout}" method="post">
