@@ -14,9 +14,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-static-top" id="top_navbar">
-    <a class="navbar-brand" th:href="@{/index}">
-        <img th:src="@{/images/todo_icon.png}" alt="nav_logo" width="40">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark navbar-static-top " id="top_navbar">
+    <a class="navbar-brand ps-2" th:href="@{/index}">
+        <img th:src="@{/images/todo_icon.png}" alt="nav_logo" width="40" class="pe-2">
         <span th:text="#{base.title}"></span>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -24,6 +24,7 @@
             <li th:replace="~{langbutton :: lang-switcher}"></li>
         </ul>
     </div>
+    <button th:replace="~{loginbutton :: auth-button}"></button>>
 </nav>
 <div class="d-flex flex-grow-1" th:replace="${content}"></div>
 </body>

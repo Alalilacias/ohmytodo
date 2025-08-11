@@ -70,6 +70,15 @@ public class SecurityConfig {
                             response.getWriter().write("{\"status\":401,\"message\":\"User is not authenticated\"}");
                         }))
                 .authenticationProvider(authenticationProvider)
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("auth/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();
     }

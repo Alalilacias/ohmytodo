@@ -1,10 +1,9 @@
 <li class="nav-item dropdown" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="lang-switcher">
     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button"
        data-bs-toggle="dropdown" aria-expanded="false">
-        <img class="rounded-circle"
-             th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
+        <img class="rounded-circle" th:src="@{'/images/' + ${#locale.language} + '_flag.png'}"
              alt="lang" width="20" height="20"/>
-        <span th:text="${#locale.language.toUpperCase()}">EN</span>
+        <span th:text="${#locale.language.toUpperCase()}"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" style="width: 40">
         <li th:if="${#locale.language != 'es'}">
