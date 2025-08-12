@@ -28,8 +28,6 @@ public class BaseWebController {
         PageResponse<TodoDto> pageResponse = PageResponseMapper.toPageResponse(todoDtoPage);
 
         model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("titleFilter", "title");
-        model.addAttribute("usernameFilter", "username");
 
         return "index";
     }
