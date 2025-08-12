@@ -28,8 +28,6 @@ public class BaseWebController {
         Page<TodoDto> todoDtoPage = todoService.getAllFiltered(title, username, pageable);
         PageResponse<TodoDto> pageResponse = PageResponseMapper.toPageResponse(todoDtoPage);
 
-        pageResponse.content().getFirst().userDto().country();
-
         model.addAttribute("pageResponse", pageResponse);
 
         return response;

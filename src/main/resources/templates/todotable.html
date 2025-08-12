@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-table" class="table-responsive">
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-table" class="table-responsive pt-5">
     <table class="table table-bordered table-hover align-middle text-center">
         <thead>
             <tr>
@@ -11,22 +11,26 @@
         </thead>
 
         <tbody>
+        <tr th:if="${#lists.isEmpty(pageResponse.content)}">
+            <td colspan="5" class="text-muted" th:text="#{todo.table.noresults}">No results</td>
+        </tr>
+
         <tr th:each="todo : ${pageResponse.content}">
             <td>
                 <span class="badge"
-                    th:classappend="${todo.completed()} ? ' text-bg-success' : ' text-bg-secondary'"
-                    th:text="${todo.completed()} ? #{todo.completed.yes} : #{todo.completed.no}">
+                    th:classappend="${todo.completed} ? ' text-bg-success' : ' text-bg-secondary'"
+                    th:text="${todo.completed} ? #{todo.completed.yes} : #{todo.completed.no}">
                 </span>
             </td>
-            <td th:text="${todo.userDto().username()}"></td>
-            <td th:text="${todo.title()}"></td>
-            <td th:text="${todo.userDto().country()}"></td>
+            <td th:text="${todo.userDto.username}"></td>
+            <td th:text="${todo.title}"></td>
+            <td th:text="${todo.userDto.country}"></td>
             <td class="d-flex gap-2 justify-content-center">
                 <a class="btn btn-sm btn-warning" th:text="#{todo.update}"
-                   th:href="@{/todos/update/{id}(id=${todo.id()})}"></a>
+                   th:href="@{/todos/update/{id}(id=${todo.id})}"></a>
 
                 <a class="btn btn-sm btn-danger" th:text="#{todo.delete}"
-                   th:href="@{/todos/delete/{id}(id=${todo.id()})}"></a>
+                   th:href="@{/todos/delete/{id}(id=${todo.id})}"></a>
             </td>
         </tr>
         </tbody>

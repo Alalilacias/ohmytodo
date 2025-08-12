@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("""
     SELECT t FROM Todo t
-    WHERE (:text IS NULL OR t.title LIKE %:text%)
-    AND (:username IS NULL OR t.user.username = :username)
+    WHERE (:text IS NULL OR :text = '' OR LOWER(t.title) LIKE LOWER(CONCAT('%', :text, '%')))
+      AND (:username IS NULL OR :username = '' OR LOWER(t.user.username) = LOWER(:username))
     """)
     Page<Todo> findAllFiltered(
             @Param("text") String text,
