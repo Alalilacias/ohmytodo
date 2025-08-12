@@ -1,0 +1,30 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-management">
+    <form th:action="@{/index}" method="get" class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label for="filter-title" class="form-label" th:text="#{filters.title}"></label>
+            <input type="text" id="filter-title" class="form-control" name="title" th:value="${param.title}" th:placeholder="#{filters.title.placeholder}" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="filter-username" class="form-label" th:text="#{filters.username}"></label>
+            <input type="text" id="filter-username" class="form-control" name="username" th:value="${param.username}" th:placeholder="#{filters.username.placeholder}" />
+        </div>
+
+        <div class="col-md-3">
+            <label for="filter-sort" class="form-label" th:text="#{filters.sortby}"></label>
+            <select id="filter-sort" class="form-select" name="sort">
+                <option th:value="title" th:text="#{filters.sortby.title}" th:selected="${sort == 'title'}"></option>
+                <option th:value="user.username" th:text="#{filters.sortby.username}" th:selected="${sort == 'username'}"></option>
+                <option th:value="user.address.country" th:text="#{filters.sortby.country}" th:selected="${sort == 'country'}"></option>
+                <option th:value="completed" th:text="#{filters.sortby.completed}" th:selected="${sort == 'completed'}"></option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <div class="d-inline-flex gap-2">
+                <button type="submit" class="btn btn-primary" th:text="#{filters.search}"></button>
+                <a type="button" class="btn btn-success" th:href="@{/todos/create}" th:text="#{filters.create}"></a>
+            </div>
+        </div>
+    </form>
+</div>

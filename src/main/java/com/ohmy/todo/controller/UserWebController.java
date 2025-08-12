@@ -30,7 +30,7 @@ public class UserWebController {
     @PostMapping("/register")
     public String register(@ModelAttribute UserRegistrationRequest userRegistrationRequest, Model model, RedirectAttributes redirectAttributes){
         try {
-            UserDto registeredUserDto = userService.add(userRegistrationRequest);
+            userService.add(userRegistrationRequest);
         } catch (UserAlreadyExistsException alreadyExistsException) {
             model.addAttribute("registerError", true);
             model.addAttribute("registerErrorMessage", alreadyExistsException.getMessage());

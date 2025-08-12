@@ -3,34 +3,9 @@
 <head>
     <title th:text="#{base.title}"></title></head>
 <body>
-<section>
-    <div class="container-fluid" th:if="${pageContent}" th:object="${pageContent}">
-        <h1>Page content:</h1>
-        <table class="table table-stripped">
-
-            <thead>
-                <th scope="col">Content</th>
-                <th scope="col">Total pages</th>
-                <th scope="col">Number</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Size</th>
-                <th scope="col">Number of elements</th>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td th:text="*{content.size()}"></td>
-                    <td th:text="*{totalPages}"></td>
-                    <td th:text="*{number}"></td>
-                    <td th:text="*{first}"></td>
-                    <td th:text="*{last}"></td>
-                    <td th:text="*{size}"></td>
-                    <td th:text="*{numberOfElements}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<section class="container pt-5">
+    <h3 th:text="#{base.manager}"></h3>
+    <div th:replace="~{todomanagementform :: todo-management}"></div>
 </section>
 </body>
 </html>
