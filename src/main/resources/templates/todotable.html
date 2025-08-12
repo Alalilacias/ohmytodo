@@ -1,0 +1,34 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-table" class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center">
+        <thead>
+            <tr>
+                <th th:text="#{filters.sortby.completed}"></th>
+                <th th:text="#{filters.sortby.username}"></th>
+                <th th:text="#{filters.sortby.title}"></th>
+                <th th:text="#{filters.sortby.country}"></th>
+                <th th:text="#{filters.actions}"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="todo : ${pageResponse.content}">
+            <td>
+                <span class="badge"
+                    th:classappend="${todo.completed()} ? ' text-bg-success' : ' text-bg-secondary'"
+                    th:text="${todo.completed()} ? #{todo.completed.yes} : #{todo.completed.no}">
+                </span>
+            </td>
+            <td th:text="${todo.userDto().username()}"></td>
+            <td th:text="${todo.title()}"></td>
+            <td th:text="${todo.userDto().country()}"></td>
+            <td class="d-flex gap-2 justify-content-center">
+                <a class="btn btn-sm btn-warning" th:text="#{todo.update}"
+                   th:href="@{/todos/update/{id}(id=${todo.id()})}"></a>
+
+                <a class="btn btn-sm btn-danger" th:text="#{todo.delete}"
+                   th:href="@{/todos/delete/{id}(id=${todo.id()})}"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -69,7 +69,7 @@ public class TodoServiceImpl implements TodoService {
     @Transactional
     @Override
     public Page<TodoDto> getAllFiltered(String title, String username, Pageable pageable) {
-        log.info("Fetching filtered todos with text={}, username={} and sort={}", title, username, pageable.getSort());
+        log.info("Fetching filtered todos with todo={}, username={} and sort={}", title, username, pageable.getSort());
         if (title == null && username == null) {return todoRepository.findAll(pageable).map(TodoMapper::toDto);}
 
         return todoRepository.findAllFiltered(title, username, pageable)

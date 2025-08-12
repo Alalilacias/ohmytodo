@@ -24,11 +24,14 @@ public class BaseWebController {
                           @RequestParam(required = false) String username,
                           @PageableDefault(size = 20, sort = "user.username", direction = Sort.Direction.ASC) Pageable pageable,
                           Model model){
+        String response = "index";
         Page<TodoDto> todoDtoPage = todoService.getAllFiltered(title, username, pageable);
         PageResponse<TodoDto> pageResponse = PageResponseMapper.toPageResponse(todoDtoPage);
 
+        pageResponse.content().getFirst().userDto().country();
+
         model.addAttribute("pageResponse", pageResponse);
 
-        return "index";
+        return response;
     }
 }
