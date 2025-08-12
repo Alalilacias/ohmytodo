@@ -1,5 +1,7 @@
 <div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-management">
     <form th:action="@{/index}" method="get" class="row g-3 align-items-end">
+        <input type="hidden" name="size" th:value="${param.size}">
+
         <div class="col-md-3">
             <label for="filter-title" class="form-label" th:text="#{filters.title}"></label>
             <input type="text" id="filter-title" class="form-control" name="title" th:value="${param.title}" th:placeholder="#{filters.title.placeholder}" />

@@ -22,7 +22,7 @@ public class BaseWebController {
     @GetMapping({"/", "/index"})
     public String getMain(@RequestParam(required = false) String title,
                           @RequestParam(required = false) String username,
-                          @PageableDefault(size = 20, sort = "user.username", direction = Sort.Direction.ASC) Pageable pageable,
+                          @PageableDefault(size = 5, sort = "user.username", direction = Sort.Direction.ASC) Pageable pageable,
                           Model model){
         String response = "index";
         Page<TodoDto> todoDtoPage = todoService.getAllFiltered(title, username, pageable);

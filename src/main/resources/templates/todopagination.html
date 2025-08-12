@@ -1,0 +1,96 @@
+<div xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="todo-pagination" class="pt-3"
+     th:with="
+       current=${pageResponse.number},
+       total=${pageResponse.totalPages},
+       start=${current - 2 > 0 ? current - 2 : 0},
+       end=${current + 2 < total - 1 ? current + 2 : total - 1},
+       isFirst=${pageResponse.first},
+       isLast=${pageResponse.last}
+     ">
+
+    <div class="d-flex justify-content-center mb-3">
+        <form id="sizeForm"
+              method="get"
+              th:action="@{/index}"
+              class="d-inline-flex align-items-center">
+            <!-- preserve current filters -->
+            <input type="hidden" name="title" th:value="${param.title}">
+            <input type="hidden" name="username" th:value="${param.username}">
+            <input type="hidden" name="page" value="0">
+
+            <label for="sizeSelect" class="me-2 mb-0" th:text="#{pagination.size}"></label>
+            <select id="sizeSelect"
+                    name="size"
+                    class="form-select form-select-sm"
+                    style="width: auto; min-width: 3.5rem;"
+                    onchange="this.form.submit()">
+                <option th:value="5"  th:selected="${pageResponse.size == 5}">5</option>
+                <option th:value="10" th:selected="${pageResponse.size == 10}">10</option>
+                <option th:value="20" th:selected="${pageResponse.size == 20}">20</option>
+                <option th:value="50" th:selected="${pageResponse.size == 50}">50</option>
+            </select>
+        </form>
+    </div>
+
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center mb-0">
+
+            <!-- First -->
+            <li class="page-item" th:classappend="${isFirst} ? ' disabled'">
+                <span class="page-link" th:if="${isFirst}">
+                    <span th:text="'« ' + #{pagination.first}"></span>
+                </span>
+                <a class="page-link" th:if="${!isFirst}"
+                   th:href="@{/index(title=${param.title},username=${param.username},page=${0},size=${pageResponse.size})}">
+                    <span th:text="'« ' + #{pagination.first}"></span>
+                </a>
+            </li>
+
+            <!-- Prev -->
+            <li class="page-item" th:classappend="${isFirst} ? ' disabled'">
+                <span class="page-link" th:if="${isFirst}">
+                  <span th:text="'‹ ' + #{pagination.previous}"></span>
+                </span>
+                <a class="page-link" th:if="${!isFirst}"
+                   th:href="@{/index(title=${param.title},username=${param.username},page=${current - 1},size=${pageResponse.size})}">
+                    <span th:text="'‹ ' + #{pagination.previous}"></span>
+                </a>
+            </li>
+
+            <!-- Numbered pages -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(start, end)}"
+                th:classappend="${i == current} ? ' active'">
+                <span class="page-link" th:if="${i == current}" th:text="${i + 1}"></span>
+                <a class="page-link" th:if="${i != current}"
+                   th:text="${i + 1}"
+                   th:href="@{/index(title=${param.title},username=${param.username},page=${i},size=${pageResponse.size})}"></a>
+            </li>
+
+            <!-- Next -->
+            <li class="page-item" th:classappend="${isLast} ? ' disabled'">
+                <span class="page-link" th:if="${isLast}">
+                    <span th:text="#{pagination.next} + ' ›'"></span>
+                </span>
+                <a class="page-link" th:if="${!isLast}"
+                   th:href="@{/index(title=${param.title},username=${param.username},page=${current + 1},size=${pageResponse.size})}">
+                    <span th:text="#{pagination.next} + ' ›'"></span>
+                </a>
+            </li>
+
+            <!-- Last -->
+            <li class="page-item" th:classappend="${isLast} ? ' disabled'">
+                <span class="page-link" th:if="${isLast}">
+                    <span th:text="#{pagination.last} + ' »'"></span>
+                </span>
+                <a class="page-link" th:if="${!isLast}"
+                   th:href="@{/index(title=${param.title},username=${param.username},page=${total - 1},size=${pageResponse.size})}">
+                    <span th:text="#{pagination.last} + ' »'"></span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
