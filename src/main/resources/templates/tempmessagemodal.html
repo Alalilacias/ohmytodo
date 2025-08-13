@@ -1,7 +1,12 @@
 <div th:fragment="message-modal" th:if="${tempModalMessage}" class="position-fixed top-0 start-50 translate-middle-x p-3"
      style="z-index:1080; max-width: 640px; width: 100%;" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div class="alert alert-success shadow alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
+    <div class="alert alert-success shadow alert-dismissible fade show" role="alert"
+         th:classappend="'alert-' + ${tempModalType}">
+        <i th:class="${tempModalType == 'success'
+                   ? 'bi bi-check-circle me-2'
+                   : (tempModalType == 'warning'
+                      ? 'bi bi-exclamation-triangle me-2'
+                      : 'bi bi-x-circle me-2')}"></i>
         <span th:text="${tempModalMessage}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

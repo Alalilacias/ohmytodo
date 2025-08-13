@@ -34,6 +34,7 @@ public class UserWebController {
         } catch (UserAlreadyExistsException alreadyExistsException) {
             model.addAttribute("registerError", true);
             model.addAttribute("registerErrorMessage", alreadyExistsException.getMessage());
+            model.addAttribute("registrationRequest", userRegistrationRequest);
             return "register";
         }
 
