@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Size;
 public record TodoRegistrationRequest(
         @Positive(message = "UserID must be positive")
         long userId,
-        @NotBlank(message = "Title is required")
-        @Size(max = 200, message = "Title must not be longer than 200 characters")
+        @Size(max = 200, message = "{todo.title.size}")
+        @NotBlank(message = "{todo.title.required}")
         String title,
         boolean completed
 ) {}
