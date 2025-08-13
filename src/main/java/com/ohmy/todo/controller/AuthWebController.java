@@ -3,7 +3,6 @@ package com.ohmy.todo.controller;
 import com.ohmy.todo.dto.request.LoginRequest;
 import com.ohmy.todo.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +29,7 @@ public class AuthWebController {
         boolean isLogged = authService.login(loginRequest, servletRequest);
 
         if (isLogged) {
-            redirectAttributes.addFlashAttribute("tempModalType", "danger");
+            redirectAttributes.addFlashAttribute("tempModalType", "success");
             redirectAttributes.addFlashAttribute("tempModalMessage", "Successfully logged in!");
             return "redirect:/index";
         } else {

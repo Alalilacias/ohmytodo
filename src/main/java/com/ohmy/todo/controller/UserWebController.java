@@ -38,7 +38,7 @@ public class UserWebController {
             return "register";
         }
 
-        redirectAttributes.addFlashAttribute("isTempModal", true);
+        redirectAttributes.addFlashAttribute("tempModalType", "success");
         redirectAttributes.addFlashAttribute("tempModalMessage", "Registration Successful! Feel free to log in.");
 
         return "redirect:/index";
