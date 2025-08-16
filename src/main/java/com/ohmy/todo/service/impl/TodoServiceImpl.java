@@ -61,7 +61,8 @@ public class TodoServiceImpl implements TodoService {
         return TodoMapper.toCompleteResponse(get(id));
     }
 
-    private Todo get(long id) {
+    @Override
+    public Todo get(long id) {
         return todoRepository.findById(id)
                 .orElseThrow(() -> new TodoNotFoundException(id));
     }
@@ -99,7 +100,8 @@ public class TodoServiceImpl implements TodoService {
         todoRepository.delete(todo);
     }
 
-    private void ensureOwnership(Todo todo) {
+    @Override
+    public void ensureOwnership(Todo todo) {
         User user = userService.getUserBySecurityContextHolder();
         if (!todo.getUser().getId().equals(user.getId())) {
             log.warn("User ID {} is not authorized to access Todo ID {}", user.getId(), todo.getId());

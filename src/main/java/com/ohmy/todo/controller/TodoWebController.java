@@ -1,8 +1,10 @@
 package com.ohmy.todo.controller;
 
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
+import com.ohmy.todo.dto.request.TodoUpdateRequest;
 import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.exception.UserNotFoundException;
+import com.ohmy.todo.model.Todo;
 import com.ohmy.todo.service.TodoService;
 import com.ohmy.todo.service.UserService;
 import jakarta.validation.Valid;
@@ -35,7 +37,7 @@ public class TodoWebController {
                       Model model, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
             model.addAttribute("users", userService.getAll());
-            model.addAttribute("registrationRequest", todoRegistrationRequest);
+            model.addAttribute("todoRegistrationRequest", todoRegistrationRequest);
 
             return "createtodo";
         }
@@ -53,6 +55,44 @@ public class TodoWebController {
 
             return "createtodo";
         }
+    }
+
+    @GetMapping("update/{id}")
+    public String update(@PathVariable long id, RedirectAttributes redirectAttributes, Model model){
+        Todo todo = todoService.get(id);
+
+        try {
+            todoService.ensureOwnership(todo);
+        } catch (UserNotAuthorizedException userNotAuthorizedException) {
+            redirectAttributes.addFlashAttribute("tempModalType", "danger");
+            redirectAttributes.addFlashAttribute("tempModalMessage", "That TODO is not yours to update");
+
+            return "redirect:/index";
+        }
+
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(todo.getId(), todo.getTitle(), todo.isCompleted());
+        model.addAttribute("todoUpdateRequest", todoUpdateRequest);
+
+        return "updatetodo";
+    }
+
+    @PostMapping("update/{id}")
+    public String update(@Valid @ModelAttribute TodoUpdateRequest todoUpdateRequest,
+                         BindingResult bindingResult,
+                         Model model, RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("users", userService.getAll());
+            model.addAttribute("todoUpdateRequest", todoUpdateRequest);
+
+            return "updatetodo";
+        }
+
+        /* Ownership already tested in get mapping. The structure of the service method is not changed to avoid refactor,
+        but it is unlikely that the error will be thrown in this method, so the try/catch is avoided in this case.
+         */
+        todoService.update(todoUpdateRequest);
+
+        return "redirect:/index";
     }
 
     @DeleteMapping("/delete/{id}")
