@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
             ConstraintViolationException ex,
             HttpServletRequest request
     ) {
+        log.warn("Constraint violation: {}", ex.toString());
         OhMyTodoError error = new OhMyTodoError(
                 HttpStatus.BAD_REQUEST,
                 "Invalid input. Please check your request and try again.",
@@ -60,6 +61,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<OhMyTodoError> handleValidationErrors(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        log.warn("Method argument not valid: {}", ex.toString());
         OhMyTodoError error = new OhMyTodoError(
                 HttpStatus.BAD_REQUEST,
                 "Invalid input. Please check your request and try again.",

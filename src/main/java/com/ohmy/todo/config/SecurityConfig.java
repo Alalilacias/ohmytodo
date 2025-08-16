@@ -33,6 +33,7 @@ public class SecurityConfig {
             "/index",
             "/auth/login",
             "/users/register",
+            "/todos/create",
     };
 
     private static final String[] PUBLIC_POST_ENDPOINTS = {
@@ -42,7 +43,8 @@ public class SecurityConfig {
             "/api/auth/login",
             "/api/auth/logout",
             // MVC endpoints
-            "/users/register"
+            "/users/register",
+            "/todos/create",
     };
 
     private static final String[] PUBLIC_RESOURCES = {
