@@ -63,19 +63,26 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(PUBLIC_RESOURCES).permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler((request, response, ex) -> {
-                            log.warn("Access denied at {}", request.getRequestURI());
-                            response.setStatus(HttpStatus.FORBIDDEN.value());
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"status\":403,\"message\":\"Access denied\"}");
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((req, res, e) -> {
+                            if (req.getRequestURI().startsWith("/api/")) {
+                                res.setStatus(401);
+                                res.setContentType("application/json");
+                                res.getWriter().write("{\"status\":401,\"message\":\"User is not authenticated\"}");
+                            } else {
+                                res.sendRedirect("/auth/login");
+                            }
                         })
-                        .authenticationEntryPoint((request, response, ex) -> {
-                            log.warn("Unauthorized access attempt to {} | Reason: {}", request.getRequestURI(), ex.getMessage());
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"status\":401,\"message\":\"User is not authenticated\"}");
-                        }))
+                        .accessDeniedHandler((req, res, e) -> {
+                            if (req.getRequestURI().startsWith("/api/")) {
+                                res.setStatus(403);
+                                res.setContentType("application/json");
+                                res.getWriter().write("{\"status\":403,\"message\":\"Access denied\"}");
+                            } else {
+                                res.sendRedirect("/index");
+                            }
+                        })
+                )
                 .authenticationProvider(authenticationProvider)
                 .formLogin(form -> form
                         .loginPage("/auth/login")

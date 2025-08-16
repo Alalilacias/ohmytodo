@@ -1,6 +1,7 @@
 package com.ohmy.todo.controller;
 
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
+import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.service.TodoService;
 import com.ohmy.todo.service.UserService;
@@ -9,12 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
@@ -57,5 +53,17 @@ public class TodoWebController {
 
             return "createtodo";
         }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable long id, RedirectAttributes redirectAttributes){
+        try {
+            todoService.delete(id);
+        } catch (UserNotAuthorizedException userNotAuthorizedException){
+            redirectAttributes.addFlashAttribute("tempModalType", "danger");
+            redirectAttributes.addFlashAttribute("tempModalMessage", "That TODO is not yours to eliminate");
+        }
+
+        return "redirect:/index";
     }
 }

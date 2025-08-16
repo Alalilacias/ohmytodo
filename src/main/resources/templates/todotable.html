@@ -29,8 +29,10 @@
                 <a class="btn btn-sm btn-warning" th:text="#{todo.update}"
                    th:href="@{/todos/update/{id}(id=${todo.id})}"></a>
 
-                <a class="btn btn-sm btn-danger" th:text="#{todo.delete}"
-                   th:href="@{/todos/delete/{id}(id=${todo.id})}"></a>
+                <form th:action="@{/todos/delete/{id}(id=${todo.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button type="submit" class="btn btn-sm btn-danger" th:text="#{todo.delete}"></button>
+                </form>
             </td>
         </tr>
         </tbody>
