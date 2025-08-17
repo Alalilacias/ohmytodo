@@ -2,13 +2,17 @@ package com.ohmy.todo.controller;
 
 import com.ohmy.todo.dto.request.TodoRegistrationRequest;
 import com.ohmy.todo.dto.request.TodoUpdateRequest;
+import com.ohmy.todo.enums.TempModalType;
 import com.ohmy.todo.exception.UserNotAuthorizedException;
 import com.ohmy.todo.exception.UserNotFoundException;
 import com.ohmy.todo.model.Todo;
 import com.ohmy.todo.service.TodoService;
 import com.ohmy.todo.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,7 @@ public class TodoWebController {
 
     private final TodoService todoService;
     private final UserService userService;
+    private final MessageSource messageSource;
 
     @GetMapping("/create")
     public String add(Model model){
@@ -34,7 +39,7 @@ public class TodoWebController {
     @PostMapping("/create")
     public String add(@Valid @ModelAttribute TodoRegistrationRequest todoRegistrationRequest,
                       BindingResult bindingResult,
-                      Model model, RedirectAttributes redirectAttributes){
+                      Model model, RedirectAttributes redirectAttributes, HttpServletRequest servletRequest){
         if (bindingResult.hasErrors()){
             model.addAttribute("users", userService.getAll());
             model.addAttribute("todoRegistrationRequest", todoRegistrationRequest);
@@ -42,16 +47,21 @@ public class TodoWebController {
             return "createtodo";
         }
 
+        String tempModalMessage;
+
         try {
             todoService.add(todoRegistrationRequest);
 
-            redirectAttributes.addFlashAttribute("tempModalType", "success");
-            redirectAttributes.addFlashAttribute("tempModalMessage", "Todo successfully created!");
+            tempModalMessage = messageSource.getMessage("todo.create.success", null, LocaleContextHolder.getLocale());
+
+            redirectAttributes.addFlashAttribute("tempModalType", TempModalType.SUCCESS.name().toLowerCase());
+            redirectAttributes.addFlashAttribute("tempModalMessage", tempModalMessage);
 
             return "redirect:/index";
         } catch (UserNotFoundException userNotFoundException){
             bindingResult.rejectValue("userId", "user.notFound", "Selected user does not exist.");
             model.addAttribute("users", userService.getAll());
+            model.addAttribute("todoRegistrationRequest", todoRegistrationRequest);
 
             return "createtodo";
         }
@@ -64,8 +74,10 @@ public class TodoWebController {
         try {
             todoService.ensureOwnership(todo);
         } catch (UserNotAuthorizedException userNotAuthorizedException) {
-            redirectAttributes.addFlashAttribute("tempModalType", "danger");
-            redirectAttributes.addFlashAttribute("tempModalMessage", "That TODO is not yours to update");
+            String tempModalMessage = messageSource.getMessage("auth.update.notowner", null, LocaleContextHolder.getLocale());
+
+            redirectAttributes.addFlashAttribute("tempModalType", TempModalType.DANGER.name().toLowerCase());
+            redirectAttributes.addFlashAttribute("tempModalMessage", tempModalMessage);
 
             return "redirect:/index";
         }
@@ -100,8 +112,10 @@ public class TodoWebController {
         try {
             todoService.delete(id);
         } catch (UserNotAuthorizedException userNotAuthorizedException){
-            redirectAttributes.addFlashAttribute("tempModalType", "danger");
-            redirectAttributes.addFlashAttribute("tempModalMessage", "That TODO is not yours to eliminate");
+            String tempModalMessage = messageSource.getMessage("auth.delete.notowner", null, LocaleContextHolder.getLocale());
+
+            redirectAttributes.addFlashAttribute("tempModalType", TempModalType.DANGER.name().toLowerCase());
+            redirectAttributes.addFlashAttribute("tempModalMessage", tempModalMessage);
         }
 
         return "redirect:/index";

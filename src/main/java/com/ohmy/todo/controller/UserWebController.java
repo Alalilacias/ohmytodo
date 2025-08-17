@@ -2,10 +2,14 @@ package com.ohmy.todo.controller;
 
 import com.ohmy.todo.dto.UserDto;
 import com.ohmy.todo.dto.request.UserRegistrationRequest;
+import com.ohmy.todo.enums.TempModalType;
 import com.ohmy.todo.exception.UserAlreadyExistsException;
 import com.ohmy.todo.model.Address;
 import com.ohmy.todo.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserWebController {
 
     private final UserService userService;
+    private final MessageSource messageSource;
 
     @GetMapping("/register")
     public String register(Model model){
@@ -38,8 +43,9 @@ public class UserWebController {
             return "register";
         }
 
-        redirectAttributes.addFlashAttribute("tempModalType", "success");
-        redirectAttributes.addFlashAttribute("tempModalMessage", "Registration Successful! Feel free to log in.");
+        String tempModalType = messageSource.getMessage("user.create.success", null, LocaleContextHolder.getLocale());
+        redirectAttributes.addFlashAttribute("tempModalType", TempModalType.SUCCESS.name().toLowerCase());
+        redirectAttributes.addFlashAttribute("tempModalMessage", tempModalType);
 
         return "redirect:/index";
     }
