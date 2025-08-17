@@ -16,7 +16,7 @@ Este README fue hecho basándome en una plantilla que he visto en uso en mis pro
 
 El proyecto sigue las especificaciones facilitadas por correo, que se pueden revisar en la carpeta de docs, bajo el nombre `omc_prueba_tecnica_pring.pdf`. Así, siguiendo estas especificaciones, se escogieron Spring Boot y Thymeleaf como combinación de Backend y Frontend.
 
-Como base de datos, se utilizó PostgreSQL, por tener experiencia en proyectos propios con ella y por su versatilidad y su característica relacional. Así mismo, si bien mi experiencia me llevaba más hacia el uso de JWT para la seguridad, escogí Redis y Spring Session para la seguridad de este proyecto, con endpoints customizados y una gestión del usuario que no requiere el guardado de un token en el navegador del usuario, sino una cookie que el servidor se encarga de gestionar y resolver. Si bien esto requiere más memoria por parte del servidor, mejora mucho la experiencia del usuario final.
+Como base de datos, se utilizó PostgreSQL, por tener experiencia en proyectos propios con ella y por su versatilidad y su característica relacional. Así mismo, tras la inicial charla en la entrevista se abandonó Redis y se mantuvo el uso de Spring Session para la seguridad de este proyecto, con endpoints customizados y una gestión del usuario que no requiere el guardado de un token en el navegador del usuario, sino una cookie que el servidor se encarga de gestionar y resolver. Si bien esto requiere más memoria por parte del servidor, mejora mucho la experiencia del usuario final.
 
 La documentación se ha hecho primordialmente mediante un seguimiento de buenas prácticas de nombres (aunque debo mencionar que sé generar documentación javadoc, pero no quise hacer poco agradable a la vista el repositorio) y SpringDoc OpenAPI.
 
@@ -30,7 +30,6 @@ Ha sido una excelente experiencia de proyecto y estoy abierto a cualquier pregun
 
 - [![Spring Boot][SpringBoot-badge]][SpringBoot-url]
 - [![Gradle][Gradle-badge]][Gradle-url]
-- [![Redis][Redis-badge]][Redis-url]
 - [![PostgreSQL][PostgreSQL-badge]][PostgreSQL-url]
 - [![Docker][Docker-badge]][Docker-url]
 - [![Docker Compose][DockerCompose-badge]][DockerCompose-url]
@@ -128,8 +127,6 @@ También se puede interactuar con la aplicación desde la interfaz web:
 [SpringBoot-url]: https://spring.io/projects/spring-boot
 [Gradle-badge]: https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white
 [Gradle-url]: https://gradle.org/
-[Redis-badge]: https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white
-[Redis-url]: https://redis.io/
 [PostgreSQL-badge]: https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
 [Docker-badge]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
