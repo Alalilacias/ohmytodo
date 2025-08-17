@@ -58,4 +58,8 @@ En aquest cas, he trobat que configurar JDBC, l'altre alternativa que he trobat 
 
 Com vam parlar durant l'entrevista, no vaig entendre be la preferencia per Thymeleaf i el model MVC. Com a resultat, vaig fer servir Javascript per poblar el front. En aquest cas, el que he fet ha sigut una reestructuració del back i el front amb el propòsit de fer servir el model MVC i un us mes fidel de la filosofia i el funcionament desitjat per Thymeleaf.
 
-El primer pas d'aquesta part de la reestructuració va ser separar la documentació del Backend REST. Crec que es important poder seguir fent servir els endpoints per fer testing de Postman i la feina ja está feta, tant per comprovar el manteniment del funcionament del sistema que fins ara s'estava fent servir com per documentar els endpoints. De la mateixa manera, es molt mes senzill llegir un controller sense tot el text de la documentació dels endpoints a sobre. Per aquest motiu, s'han traslladat els comentaris de documentació a una interface que implementen els controladors rest, als quals he canviat el nom per adaptar el seu nou propòsit.
+Aquesta reestructuració va implicar la modificació de les vistes i la manera en la que s'organitzen, els controladors, els serveis i, fins it tot el repositori, per adaptar-los als requeriments per poder fer una adequada gestió i gestió de possibles problemes en l'execució del programa.
+
+Per més informació, els commits, si bé menys verbosos que els inicials, contenen prou informació com per entendre tant els canvis com els motius per les eleccions fetes.
+
+Al final d'aquesta reestructuració tenim tant les funcionalitats REST com les MVC, tot I que el front només treballa amb els endpoints MVC.
